@@ -1,0 +1,69 @@
+body,html{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    font-family: sans-serif;
+  }
+  
+  .background_img{
+    z-index: -10;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background-image: url('images/field.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    justify-content: center;
+    animation: change 60s infinite ease-in-out;
+  }
+  .white_cover{
+    z-index: -9;
+    background-color: whitesmoke;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.6; 
+    pointer-events: none;
+  }
+  .content{
+    position: relative;
+    z-index:0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    text-align: center;
+  }
+
+    @keyframes change{
+        0%
+        {
+            background-image: url('images/plumber.jpg');
+        }
+        20%
+        {
+            background-image: url('images/artisan.jpg');
+        }
+        40%
+        {
+            background-image: url('images/carpenter.jpg');
+        }
+        60%
+        {
+            background-image: url('images/laundry.jpg');
+        }
+        80%
+        {
+            background-image: url('images/paint.jpg');
+        }
+        100%
+        {
+            background-image: url('images/electrician.jpg');
+        }
+    }
