@@ -4,10 +4,12 @@ body,html{
     width: 100%;
     height: 100vh;
     font-family: sans-serif;
+    overflow-y: auto; /* Enables scrolling */
+
   }
   
   .background_img{
-    z-index: -10;
+    z-index: 0;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -18,10 +20,11 @@ body,html{
     background-size: cover;
     text-align: center;
     justify-content: center;
-    animation: change 60s infinite ease-in-out;
+    animation: change 30s infinite ease-in-out;
+    
   }
   .white_cover{
-    z-index: -9;
+    z-index: 1;
     background-color: whitesmoke;
     position: absolute;
     top: 0;
@@ -33,13 +36,227 @@ body,html{
   }
   .content{
     position: relative;
-    z-index:0;
+    z-index:2;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     justify-content: center;
     text-align: center;
+    line-height: 45px;
   }
+  .content h1{
+    font-size: 36px;
+  }
+  .content h3{
+    font-size: 24px;
+  }
+  .content h5{
+    font-size: 20px;
+  }
+  .switch{
+    z-index: 2;
+    position: relative;
+    top: 60%;
+    left: 53%;
+    transform: translate(-60%, -53%);
+    justify-content: center;
+    text-align: center;
+    width: 400px;
+    height: 50px;
+    border-radius: 25px;
+  }
+  .switch input{
+    appearance: none;
+    width: 400px;
+    height: 50px;
+    border-radius:25px;
+    background: #1e1e1e;
+    outline: none;
+  }
+  .switch input::before,
+.switch input::after {
+    z-index: 3;
+    position: absolute;
+    top: 56%;
+    transform: translateY(-50%);
+    font-weight: bolder;
+    
+}
+
+.switch input::before {
+    content: "Get a Job";
+    left: 70px;
+}
+.switch input::after {
+    content: "Post a Job";
+    right: 70px;
+}
+.switch input:checked{
+  background: black;
+}
+.switch label{
+  z-index: 2;
+  position: absolute;
+  top: 10px;
+  bottom: 4px;
+  border-radius: 20px;
+}
+.switch input {
+    transition: 0.25s;
+}
+
+.switch input:checked::after,
+.switch input:checked::before {
+    color: #fff;
+    transition: color 0.5s;
+}
+
+.switch input:checked+label {
+    left: 10px;
+    right: 200px;
+    background: rgb(115, 117, 66);
+    transition: left 0.5s, right 0.4s 0.2s;
+}
+.switch input:not(:checked) {
+    background: #1E1E1E;
+    transition: background 0.4s;
+}
+
+.switch input:not(:checked)::before {
+    color: #ffffff;
+    transition: color 0.5s;
+}
+
+.switch input:not(:checked)::after {
+    color: #1E1E1E;
+    transition: color 0.5s 0.2s;
+}
+.switch input:not(:checked) + label{
+    left: 200px;
+    right: 10px;
+    background: rgb(115, 117, 66);
+    transition: left 0.4s 0.2s, right 0.5s, background 0.35s;
+}
+.about{
+  position: relative;
+  padding-top: 100px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  gap: 1.5rem;
+}
+.about img{
+  border-radius:50%;
+  width: 600px;
+  height: 400px;
+}
+.about-text h1{
+  font-size: 36px;
+  text-shadow: #ffffff;
+  
+}
+.about-text span{
+  color: rgb(115, 117, 66);
+}
+.about-text p{
+  line-height: 40px;
+  text-align: justify;
+}
+
+
+
+/* Container Styling */
+.testimonial-container {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* Title */
+.testimonial-container .title h2 {
+  font-size: 2rem;
+  color: #222;
+  margin-bottom: 0.5rem;
+}
+
+.testimonial-container .title p {
+  color: #777;
+  margin-bottom: 1.5rem;
+}
+
+/* Slide Content */
+.splide__slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.review-img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+.content .text {
+  font-style: italic;
+  font-size: 1rem;
+  color: #444;
+  margin: 0.8rem 0;
+  padding: 0 1rem;
+}
+
+.info {
+  text-align: center;
+}
+
+.info .user {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* Star Rating */
+.rating {
+  font-size: 1.2rem;
+  color: #f7c948; /* Gold stars */
+  letter-spacing: 2px;
+}
+
+/* Splide arrows */
+.splide__arrow {
+  background: #444;
+  opacity: 0.8;
+  border-radius: 50%;
+  transition: all 0.3s;
+}
+
+.splide__arrow:hover {
+  background: #222;
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .testimonial-container {
+    padding: 1rem;
+  }
+
+  .content .text {
+    font-size: 0.95rem;
+  }
+
+  .rating {
+    font-size: 1rem;
+  }
+}
 
     @keyframes change{
         0%

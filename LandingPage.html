@@ -5,18 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JuaKazi</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Splide CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css" />
+
 </head>
 <body>
-   <div class="background_img">
+   <section class="background_img">
        <div class="white_cover"></div>
-       <div class="content">
-        <h1>Welcome To <span>JuaKazi</span></h1>
-        <p>Here, we connect artisans to potential clients at no cost.</p>
-        <p>Join Us Now!</p>
-   </div>
-   </div>
-   
-   
-   
+        <div class="content">
+            <h1><span>JuaKazi:</span> Bridging Artisans to Clients.</h1>
+           
+            <h5>Join Us Now!</h5>
+        </div>
+        <div class="switch">
+            <input type="checkbox" id="switcher">
+            <label for="switcher"></label>
+        </div>
+
+   </section>
+   <section class="about">
+        
+       <div class="img">
+            <img src="images/artisan.jpg">
+        </div>
+
+        <div class="about-text">
+            <h1>About <span>Us</span></h1>
+            <p>I was a girl in the village doing alright. Then I became a princess overnight. Now i gotta figure out how to do it right. So much to
+            learn and see. Up in the castle with a new family. And a school thats just for royalty. A whole enchanting world is waiting for me.
+            Im so excited to be Sofia the First!
+            </p>
+        </div>
+   </section>
+   <section class="testimonial-container">
+    <div class="title">
+    <h2>Testimonial</h2>
+    <p>What members are saying.</p>
+     </div>
+
+    <div class="splide" id="testimonial-slider">
+    <div class="splide__track">
+      <ul class="splide__list" id="splide-list">
+        <!-- Slides will be inserted here dynamically -->
+      </ul>
+    </div>
+  </div>
+   </section>
+
+<!-- Splide JS -->
+<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
