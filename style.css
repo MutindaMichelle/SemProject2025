@@ -22,7 +22,19 @@ body,html{
     text-align: center;
     justify-content: center;
     animation: change 30s infinite ease-in-out;
-    
+  }
+  .registration_bg{
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    background-image: url('images/hotdude.jpeg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+    justify-content: center;
   }
   .white_cover{
     z-index: 1;

@@ -12,16 +12,21 @@
   </head>
 
   <body>
+    <section class="registration_bg">
+       <div class="white_cover"></div>
+    </section>
    
     <div class="container" id="container">
        <div class="form-container sign-up">
-        <form>
+        <form action="registration.php" method="POST">
           <h4>Welcome to JuaKazi!<br><br>Enter your details below to create an account with us.</h4>
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <input type="number" placeholder="Phone Number"/>
-          <button>CREATE ACCOUNT</button>
+          <input type="text" placeholder="Name" id="name" name="name"/>
+          <input type="email" placeholder="Email" id="email" name="email"/>
+          <input type="password" placeholder="Password" id="password" name="password"/>
+          <input type="number" placeholder="Phone Number" id="phone" name="phone"/>
+          <input type="hidden" id="userType" name="userType" />
+
+          <button type="submit" id="Reg_submit" name="submit">CREATE ACCOUNT</button>
         </form>
       </div>
       <div class="form-container sign-in">
@@ -52,10 +57,11 @@
         </div>
       </div>
     </div>
-<script>
+    <script>
   window.addEventListener("DOMContentLoaded", () => {
     const userType = localStorage.getItem("userType");
     const greeting = document.getElementById("greeting");
+    const userTypeInput = document.getElementById("userType");
 
     if (userType === "client") {
       greeting.textContent = "Hello Client!";
@@ -64,8 +70,13 @@
     } else {
       greeting.textContent = "Hello!";
     }
+
+    if (userType && userTypeInput) {
+      userTypeInput.value = userType;
+    }
   });
 </script>
+
 
     <script src="script.js"></script>
   </body>
