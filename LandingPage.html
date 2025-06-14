@@ -22,6 +22,7 @@
             <label for="switcher"></label>
         </div>
 
+
    </section>
    <section class="about">
         
@@ -37,23 +38,18 @@
             </p>
         </div>
    </section>
-   <section class="testimonial-container">
-    <div class="title">
-    <h2>Testimonial</h2>
-    <p>What members are saying.</p>
-     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () { //waits for page to load
+    const switcher = document.getElementById("switcher");
+    switcher.addEventListener("change", function () { //waits for an event on the switch
+      const userType = switcher.checked ? "artisan" : "client"; //if checked, ni artisan. if not, ni client
+      localStorage.setItem("userType", userType); //userType is stored in the local storage foundon the browser
+      window.location.href = "Registration.html"; //then we songa to the next page
+    });
+  });
+</script>
 
-    <div class="splide" id="testimonial-slider">
-    <div class="splide__track">
-      <ul class="splide__list" id="splide-list">
-        <!-- Slides will be inserted here dynamically -->
-      </ul>
-    </div>
-  </div>
-   </section>
 
-<!-- Splide JS -->
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

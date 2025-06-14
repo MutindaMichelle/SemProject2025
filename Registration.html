@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>JuaKazi Login</title>
+  </head>
+
+  <body>
+   
+    <div class="container" id="container">
+       <div class="form-container sign-up">
+        <form>
+          <h4>Welcome to JuaKazi!<br><br>Enter your details below to create an account with us.</h4>
+          <input type="text" placeholder="Name" />
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+          <input type="number" placeholder="Phone Number"/>
+          <button>CREATE ACCOUNT</button>
+        </form>
+      </div>
+      <div class="form-container sign-in">
+        <form>
+          <h2 id="greeting"></h2>
+          <span>Fill in your details to Sign In to your existing account <br> <br> </span>
+          <input type="email" placeholder="Email" />
+          <input type="password" placeholder="Password" />
+          <a href="#">Forget Your Password?</a>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <div class="toggle-container">
+        <div class="toggle">
+          <div class="toggle-panel toggle-left">
+            <h2 id="greeting"></h2>
+            <h2>Already have an account?</h2>
+            <p>Press the button below to sign in to existing account</p>
+            <button class="hidden" id="login">Sign In</button>
+          </div>
+          <div class="toggle-panel toggle-right">
+            <h2>Don't have an existing account?</h2>
+            <p>
+              Register with your personal details to use all of site features
+            </p>
+            <button class="hidden" id="register">Sign Up</button>
+          </div>
+        </div>
+      </div>
+    </div>
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const userType = localStorage.getItem("userType");
+    const greeting = document.getElementById("greeting");
+
+    if (userType === "client") {
+      greeting.textContent = "Hello Client!";
+    } else if (userType === "artisan") {
+      greeting.textContent = "Hello Artisan!";
+    } else {
+      greeting.textContent = "Hello!";
+    }
+  });
+</script>
+
+    <script src="script.js"></script>
+  </body>
+</html>
