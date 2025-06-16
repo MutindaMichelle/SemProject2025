@@ -11,30 +11,37 @@
     <title>JuaKazi Login</title>
   </head>
 
+
   <body>
     <section class="registration_bg">
        <div class="white_cover"></div>
     </section>
-   
+   <!-- Registration Form-->
     <div class="container" id="container">
        <div class="form-container sign-up">
         <form action="registration.php" method="POST">
+
           <h4>Welcome to JuaKazi!<br><br>Enter your details below to create an account with us.</h4>
-          <input type="text" placeholder="Name" id="name" name="name"/>
-          <input type="email" placeholder="Email" id="email" name="email"/>
-          <input type="password" placeholder="Password" id="password" name="password"/>
-          <input type="number" placeholder="Phone Number" id="phone" name="phone"/>
+
+          <input type="text" placeholder="Name" id="name" name="name" required/>
+          <input type="email" placeholder="Email" id="email" name="email" required/>
+          <input type="password" placeholder="Password" id="password" name="password" required/>
+          <input type="password" placeholder="Confirm Password" id="confirm_password" name="confirm_password" required/>
+          <input type="tel" placeholder="Phone Number" id="phone" name="phone" required/>
           <input type="hidden" id="userType" name="userType" />
 
           <button type="submit" id="Reg_submit" name="submit">CREATE ACCOUNT</button>
         </form>
       </div>
+      <!-- Login Form-->
       <div class="form-container sign-in">
         <form>
           <h2 id="greeting"></h2>
+
           <span>Fill in your details to Sign In to your existing account <br> <br> </span>
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
+          
+          <input type="tel" name="phone"  placeholder="Phone Number" pattern="[0-9+]+" required/>
+          <input type="password" name="password" placeholder="Password" required/>
           <a href="#">Forget Your Password?</a>
           <button>Sign In</button>
         </form>
