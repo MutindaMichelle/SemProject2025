@@ -19,6 +19,7 @@
    <!-- Registration Form-->
     <div class="container" id="container">
        <div class="form-container sign-up">
+
         <form action="registration.php" method="POST">
 
           <h4>Welcome to JuaKazi!<br><br>Enter your details below to create an account with us.</h4>
@@ -39,13 +40,18 @@
           <h2 id="greeting"></h2>
 
           <span>Fill in your details to Sign In to your existing account <br> <br> </span>
-          
+
+          <form action="login.php" method="POST">
           <input type="tel" name="phone"  placeholder="Phone Number" pattern="[0-9+]+" required/>
           <input type="password" name="password" placeholder="Password" required/>
           <a href="#">Forget Your Password?</a>
+
           <button>Sign In</button>
-        </form>
+
+          </form>
       </div>
+      
+      <!-- Toggle Container -->
       <div class="toggle-container">
         <div class="toggle">
           <div class="toggle-panel toggle-left">
@@ -64,6 +70,8 @@
         </div>
       </div>
     </div>
+
+    
     <script>
   window.addEventListener("DOMContentLoaded", () => {
     const userType = localStorage.getItem("userType");
