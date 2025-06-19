@@ -28,27 +28,42 @@
           <input type="email" placeholder="Email" id="email" name="email" required/>
           <input type="password" placeholder="Password" id="password" name="password" required/>
           <input type="password" placeholder="Confirm Password" id="confirm_password" name="confirm_password" required/>
-          <input type="tel" placeholder="Phone Number" id="phone" name="phone" required/>
+         
           <input type="hidden" id="userType" name="userType" />
 
+           <div style="display: flex; gap: 5px;">
+                <select name="countryCode" id="countryCode" required style="padding: 10px;">
+                  <option value="+254" selected>+254</option>
+                </select>
+                <input type="tel" name="halfphone"  placeholder="712345678" pattern="[0-9][0-9]{8}" required
+                  style="flex: 1; padding: 10px;"
+                />
+             </div>
           <button type="submit" id="Reg_submit" name="submit">CREATE ACCOUNT</button>
         </form>
       </div>
       <!-- Login Form-->
       <div class="form-container sign-in">
-        <form>
+        <form action="login.php" method="POST">
           <h2 id="greeting"></h2>
 
           <span>Fill in your details to Sign In to your existing account <br> <br> </span>
-
-          <form action="login.php" method="POST">
-          <input type="tel" name="phone"  placeholder="Phone Number" pattern="[0-9+]+" required/>
+           <div style="display: flex; gap: 5px;">
+                <select name="countryCode" id="countryCode" required style="padding: 10px;">
+                  <option value="+254" selected>+254</option>
+                </select>
+                <input type="tel" name="halfphone"  placeholder="712345678" pattern="[0-9][0-9]{8}" required
+                  style="flex: 1; padding: 10px;"
+                />
+             </div>
+          <!-- <input type="tel" name="phone"  placeholder="Phone Number" pattern="[0-9+]+" required/> -->
           <input type="password" name="password" placeholder="Password" required/>
           <a href="#">Forget Your Password?</a>
 
           <button>Sign In</button>
 
-          </form>
+          
+        </form>
       </div>
       
       <!-- Toggle Container -->
