@@ -13,7 +13,11 @@ if(isset($_POST['submit']))
         $email = $_POST['email'];
         $password = $_POST['password'];
         $confirm = $_POST['confirm_password']; // Check if passwords match
-        $phone = $_POST['phone'];
+        //$phone = $_POST['phone'];
+        $countryCode = $_POST['countryCode'];
+        $halfphone = $_POST['halfphone'];
+        $phone = $countryCode . $halfphone;
+
         $userType = $_POST['userType'];
 
         // Validate the inputs
@@ -48,7 +52,7 @@ if(isset($_POST['submit']))
         $check = "SELECT * FROM users WHERE phone='$phone'";
         $result = $conn->query($check);
         if ($result->num_rows > 0) {
-            echo "Phone number already exists!";
+            echo "Phone number already exists! Log In instead.";
             exit;
         }
 

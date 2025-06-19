@@ -9,7 +9,10 @@ include("connection.php");
 
 // Check if form was submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $phone = trim($_POST['phone']);
+    $countryCode = $_POST['countryCode'];
+    $halfphone = $_POST['halfphone'];
+    $phone = $countryCode . $halfphone;
+    //$phone = trim($_POST['phone']);
     $password = $_POST['password'];
 
     // Validate input
