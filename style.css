@@ -37,6 +37,7 @@ html {
   text-align: center;
   justify-content: center;
 }
+
 .white_cover {
   z-index: 1;
   background-color: whitesmoke;
@@ -133,11 +134,11 @@ html {
 }
 
 .switch input::before {
-  content: "Get a Job";
+  content: "Find a Worker";
   left: 70px;
 }
 .switch input::after {
-  content: "Post a Job";
+  content: "Find Work";
   right: 70px;
 }
 .switch input:checked {
@@ -313,7 +314,10 @@ html {
   opacity: 0;
   z-index: 1;
 }
-
+.password {
+  max-height: 20px;
+  padding: 0;
+}
 .container.active .sign-up {
   transform: translateX(100%);
   opacity: 1;
@@ -402,7 +406,7 @@ html {
 
 /* Created Page*/
 .created_container {
-  background-color: #fff;
+  background: linear-gradient(to right, #0f2027, #2c5364);
   border-radius: 30px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   position: absolute;
@@ -421,21 +425,21 @@ html {
 }
 .created_container i {
   font-size: 64px;
-  color: #00b53f;
+  color: rgb(168, 165, 165);
   margin-bottom: 10px;
 }
 .created_container h1 {
   font-family: "Segoe UI", sans-serif;
   font-size: 35px;
   font-weight: 600;
-  color: #1a3d2f; /* Dark greenish tone */
+  color: rgb(168, 165, 165);
   text-align: center;
   margin-top: 16px;
   margin-bottom: 0;
 }
 .created_container button {
-  background-color: #00b53f;
-  color: #fff;
+  background-color: rgb(168, 165, 165);
+  color: black;
   font-size: 20px;
   padding: 10px 25px;
   size: 2px;
@@ -454,7 +458,22 @@ html {
 
 /* Profile set up */
 
+.profile_bg {
+  z-index: -4;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  background-image: url("images/hotdude.jpeg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  justify-content: center;
+}
+
 .prof_container {
+  margin-top: 15px;
   display: flex;
   max-width: 1000px;
   margin: auto;

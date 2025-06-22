@@ -55,10 +55,10 @@
                 <input type="tel" name="halfphone"  placeholder="712345678" pattern="[0-9][0-9]{8}" required
                   style="flex: 1; padding: 10px;"
                 />
-             </div>
+            </div>
           <!-- <input type="tel" name="phone"  placeholder="Phone Number" pattern="[0-9+]+" required/> -->
-          <input type="password" name="password" placeholder="Password" required/>
-          <a href="#">Forget Your Password?</a>
+          <input type="password" class="password" name="password" placeholder="Password" required/>
+          <a href="#">Forgot Your Password?</a>
 
           <button>Sign In</button>
 
@@ -94,9 +94,9 @@
     const userTypeInput = document.getElementById("userType");
 
     if (userType === "client") {
-      greeting.textContent = "Hello Client!";
+      greeting.textContent = "Hello MwenyeKazi!";
     } else if (userType === "artisan") {
-      greeting.textContent = "Hello Artisan!";
+      greeting.textContent = "Hello MfanyaKazi!";
     } else {
       greeting.textContent = "Hello!";
     }

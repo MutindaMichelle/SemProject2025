@@ -64,7 +64,8 @@ if(isset($_POST['submit']))
         $sql = "INSERT INTO users (name, email, password, phone, userType) VALUES ('$name', '$email', '$hashedPassword', '$phone','$userType')";
 
         if ($conn->query($sql) === TRUE) {
-            echo "Account created successfully!";
+            header("Location: created.html");
+    exit();
         } else {
             echo "Error: " . $conn->error;
         }
