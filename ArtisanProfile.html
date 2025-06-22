@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile Form</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="prof_container">
+    <!-- Left Side: Profile Image Upload -->
+    <div class="profile-sidebar">
+      <img src="images/worker.jpg" alt="Profile Image" class="profile-img" id="preview"/>
+      <input type="file" id="imageUpload" style="display: none;" />
+      <button class="upload-btn" id="uploadBtn"onclick="document.getElementById('imageUpload').click()">Upload Profile Image</button>
+      <p id="warning">*Image once added cannot be changed</p>
+    </div>
+
+    <!-- Right Side: Profile Settings Form -->
+    <div class="profile-main">
+      <h2>Profile Settings</h2>
+      <form class="profile-form" action="save_profile.php" method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+          <input type="text" name="first_name" placeholder="First Name" required />
+          <input type="text" name="last_name" placeholder="Last Name" required />
+        </div>
+
+        <!-- <input type="text" name="mobile" placeholder="Mobile Number" required /> -->
+         <div style="display: flex; gap: 5px;">
+                <select name="countryCode" id="countryCode" required style="padding: 5px; padding-left: 5px;">
+                  <option value="+254" selected>+254</option>
+                </select>
+                <input type="tel" name="halfphone"  placeholder="712345678" pattern="[0-9][0-9]{8}" required
+                  style="flex: 1; padding: 10px;"
+                />
+             </div>
+        <input type="email" name="email" placeholder="Email" required />
+       <textarea name="description" placeholder="A small description of you and your work ethic" required rows="5"></textarea>
+        <div class="expertise-section">
+          <label>Areas of Expertise:</label>
+          <div id="expertise-fields"></div>
+        </div>
+        <label>Number of Years Worked: </label>
+       <input type="number" name="years" placeholder="? Years" required />
+
+       <label> <br>Location: </label>
+        <div class="input-group">
+          <select name="county" id="countySelect" required>
+            <option value="">Select County</option>
+            <option value="Western">Nairobi</option>
+            <option value="Central">Nakuru</option>
+          </select>
+
+          <select name="sub-county" id="subCountySelect" required>
+            <option value="">Select Sub County</option>
+            <option value="Embakasi">Embakasi</option>
+            <option value="Pipeline">Pipeline</option>
+          </select>
+        </div>
+
+       
+        <label> <br>Upload appropriate certifications for verification: </label>
+        <div class="file-drop-area" id="drop-area" onclick="document.getElementById('fileInput').click()">
+           <input type="file" id="fileInput" name="uploaded_file[]" hidden required multiple />
+          <div class="file-drop-message">
+              <div class="upload-icon">&#8681;</div>
+              <div class="file-preview" id="filePreview"></div>
+              <p>You can drag and drop multiple files here to add them.</p>
+              
+          </div>
+        </div>
+        
+
+        
+        <button type="submit" class="upload-btn">Submit</button>
+      </form>
+    </div>
+  </div>
+
+ 
+  <script>
+  window.onload = createExpertiseInput;
+  const imageUpload = document.getElementById("imageUpload");
+  const preview = document.getElementById("preview");
+  const uploadBtn = document.getElementById("uploadBtn");
+  const warning = document.getElementById("warning");
+
+  imageUpload.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.addEventListener("load", function () {
+      preview.src = reader.result;
+      uploadBtn.style.display = "none";
+      warning.style.display = "none";
+      });
+
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function addExpertise() {
+    const container = document.getElementById("expertise-fields");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "expertise[]";
+    input.placeholder = "e.g. Electrician";
+    input.required = true;
+    container.appendChild(input);
+  }
+  
+  const container = document.getElementById("expertise-fields");
+
+  function createExpertiseInput() {
+    // Remove all existing "+" buttons
+    document.querySelectorAll(".plus-btn").forEach(btn => btn.remove());
+
+    const group = document.createElement("div");
+    group.className = "expertise-group";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.name = "expertise[]";
+    input.placeholder = "e.g. Plumbing";
+    input.required = true;
+
+    const addBtn = document.createElement("button");
+    addBtn.type = "button";
+    addBtn.className = "plus-btn";
+    addBtn.textContent = "+";
+    addBtn.onclick = createExpertiseInput;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.type = "button";
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "x";
+    removeBtn.onclick = () => {
+    group.remove();
+
+    // If no input fields left, add a new one
+    const remaining = document.querySelectorAll(".expertise-group");
+    if (remaining.length === 0) {
+      createExpertiseInput();
+    } else {
+      updatePlusButtons(); // keep + on the last one
+    }
+
+    };
+
+
+    group.appendChild(input);
+    group.appendChild(addBtn);    // will be removed later if not the last
+    group.appendChild(removeBtn);
+
+    container.appendChild(group);
+
+    updatePlusButtons(); // ensure only one "+" is visible
+  }
+
+  function updatePlusButtons() {
+    const groups = document.querySelectorAll(".expertise-group");
+    groups.forEach((group, index) => {
+      const plus = group.querySelector(".plus-btn");
+      if (plus) {
+        plus.style.display = (index === groups.length - 1) ? "inline-block" : "none";
+      }
+    });
+  }
+
+  /* Upload a file */
+  
+  
+    const fileInput = document.getElementById("fileInput");
+    const filePreviewContainer = document.getElementById("filePreview");
+
+    let selectedFiles = []; // This array will hold the files that are currently selected for upload
+
+    // Function to render/re-render all file previews (NO CHANGE TO THIS FUNCTION)
+    function renderFilePreviews() {
+        filePreviewContainer.innerHTML = ''; // Clear existing previews
+
+        if (selectedFiles.length === 0) {
+            // Optionally show a message if no files are selected
+            // filePreviewContainer.innerHTML = '<p>No files selected yet.</p>';
+            return;
+        }
+
+        selectedFiles.forEach((file, index) => {
+            const previewBox = document.createElement('div');
+            previewBox.classList.add('preview-box');
+            previewBox.dataset.fileIndex = index;
+
+            const removeBtn = document.createElement('span');
+            removeBtn.classList.add('remove-file-btn');
+            removeBtn.innerHTML = '&times;';
+            removeBtn.title = 'Remove file';
+            removeBtn.addEventListener('click', (event) => {
+                event.stopPropagation();
+                removeFile(index);
+            });
+            previewBox.appendChild(removeBtn);
+
+            const fileName = document.createElement('span');
+            fileName.classList.add('file-name-text');
+            fileName.textContent = file.name;
+            
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.addEventListener("load", function () {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.alt = file.name;
+                    previewBox.appendChild(img);
+                    previewBox.appendChild(fileName);
+                });
+                reader.readAsDataURL(file);
+            } else if (file.type === 'application/pdf') {
+                const pdfIcon = document.createElement('div');
+                pdfIcon.innerHTML = '&#x1F5C4;';
+                pdfIcon.classList.add('document-icon');
+                previewBox.appendChild(pdfIcon);
+                previewBox.appendChild(fileName);
+            } else {
+                const genericIcon = document.createElement('div');
+                genericIcon.innerHTML = '&#x1F4C4;';
+                genericIcon.classList.add('document-icon');
+                previewBox.appendChild(genericIcon);
+                previewBox.appendChild(fileName);
+            }
+
+            filePreviewContainer.appendChild(previewBox);
+        });
+    }
+
+    // Function to remove a file from the selectedFiles array (NO CHANGE TO THIS FUNCTION)
+    function removeFile(indexToRemove) {
+        selectedFiles = selectedFiles.filter((_, index) => index !== indexToRemove);
+        updateFileInputFiles();
+        renderFilePreviews();
+    }
+
+    // Function to update the actual file input's files property (NO CHANGE TO THIS FUNCTION)
+    function updateFileInputFiles() {
+        const dataTransfer = new DataTransfer();
+        selectedFiles.forEach(file => {
+            dataTransfer.items.add(file);
+        });
+        fileInput.files = dataTransfer.files;
+    }
+
+    // Event listener for when files are selected via the input
+    fileInput.addEventListener("change", function () {
+        // --- THIS IS THE CRUCIAL CHANGE ---
+        // Concatenate new files with existing ones
+        // Also, convert to Array from FileList and ensure uniqueness if desired
+        const newFiles = Array.from(this.files);
+        
+        // A simple way to de-duplicate files by name and size (good for basic de-duping)
+        const uniqueNewFiles = newFiles.filter(newFile => 
+            !selectedFiles.some(existingFile => 
+                existingFile.name === newFile.name && existingFile.size === newFile.size
+            )
+        );
+        
+        selectedFiles = [...selectedFiles, ...uniqueNewFiles]; // Accumulate unique new files
+        
+        updateFileInputFiles(); // Update the HTML input's FileList
+        renderFilePreviews();   // Render all accumulated files
+    });
+
+    // Handle drag and drop if you want this functionality
+    const dropArea = document.getElementById('drop-area');
+
+    if (dropArea) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+        });
+
+        dropArea.addEventListener('drop', function(e) {
+            const dt = e.dataTransfer;
+            const droppedFiles = dt.files;
+
+            // --- THIS IS THE CRUCIAL CHANGE FOR DRAG & DROP ---
+            const newFiles = Array.from(droppedFiles);
+            const uniqueNewFiles = newFiles.filter(newFile => 
+                !selectedFiles.some(existingFile => 
+                    existingFile.name === newFile.name && existingFile.size === newFile.size
+                )
+            );
+            selectedFiles = [...selectedFiles, ...uniqueNewFiles]; // Accumulate unique new files
+            
+            updateFileInputFiles();
+            renderFilePreviews();
+        }, false);
+    }
+
+    function preventDefaults (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    /* County Lists */
+    const countySelect = document.getElementById('countySelect');
+    const subCountySelect = document.getElementById('subCountySelect');
+    let allCountiesData = []; // To store the fetched data
+
+    // Function to fetch data and populate counties
+    async function loadCounties() {
+        try {
+            // Adjust the path to your JSON file as needed
+            const response = await fetch('counties.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            allCountiesData = await response.json();
+
+            // Populate the County dropdown
+            countySelect.innerHTML = '<option value="">Select County</option>'; // Keep default
+            allCountiesData.forEach(county => {
+                const option = document.createElement('option');
+                option.value = county.name;
+                option.textContent = county.name;
+                countySelect.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error loading counties data:', error);
+            // Display an error message to the user if data fails to load
+            countySelect.innerHTML = '<option value="">Error loading counties</option>';
+            subCountySelect.innerHTML = '<option value="">Error loading sub-counties</option>';
+        }
+    }
+
+    // Function to populate sub-counties based on selected county
+    function populateSubCounties() {
+        const selectedCountyName = countySelect.value;
+        subCountySelect.innerHTML = '<option value="">Select Sub County</option>'; // Reset sub-county dropdown
+
+        if (selectedCountyName) {
+            const selectedCounty = allCountiesData.find(county => county.name === selectedCountyName);
+            if (selectedCounty && selectedCounty.sub_counties) {
+                selectedCounty.sub_counties.sort().forEach(subCounty => { // Sort alphabetically
+                    const option = document.createElement('option');
+                    option.value = subCounty;
+                    option.textContent = subCounty;
+                    subCountySelect.appendChild(option);
+                });
+            }
+        }
+    }
+
+    // Event listener for when a county is selected
+    countySelect.addEventListener('change', populateSubCounties);
+
+    // Initial load of counties when the page loads
+    document.addEventListener('DOMContentLoaded', loadCounties);
+
+
+
+</script>
+
+</body>
+</html>
