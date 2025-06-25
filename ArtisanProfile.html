@@ -14,37 +14,39 @@
     <!-- Left Side: Profile Image Upload -->
     <div class="profile-sidebar">
       <img src="images/worker.jpg" alt="Profile Image" class="profile-img" id="preview"/>
-      <input type="file" id="imageUpload" style="display: none;" />
+      <input type="file" id="imageUpload" name="imageUpload" style="display: none;" required />
       <button class="upload-btn" id="uploadBtn"onclick="document.getElementById('imageUpload').click()">Upload Profile Image</button>
-      <p id="warning">*Image once added cannot be changed</p>
+      <p id="warning">*Profile image is required and cannot be changed later</p>
     </div>
 
     <!-- Right Side: Profile Settings Form -->
     <div class="profile-main">
       <h2>Profile Settings</h2>
-      <form class="profile-form" action="save_profile.php" method="POST" enctype="multipart/form-data">
+      <form class="profile-form" action="ArtisanProfile.php" method="POST" enctype="multipart/form-data">
         <div class="input-group">
           <input type="text" name="first_name" placeholder="First Name" required />
           <input type="text" name="last_name" placeholder="Last Name" required />
         </div>
-
-        <!-- <input type="text" name="mobile" placeholder="Mobile Number" required /> -->
-         <div style="display: flex; gap: 5px;">
-                <select name="countryCode" id="countryCode" required style="padding: 5px; padding-left: 5px;">
-                  <option value="+254" selected>+254</option>
-                </select>
-                <input type="tel" name="halfphone"  placeholder="712345678" pattern="[0-9][0-9]{8}" required
-                  style="flex: 1; padding: 10px;"
-                />
-             </div>
-        <input type="email" name="email" placeholder="Email" required />
-       <textarea name="description" placeholder="A small description of you and your work ethic" required rows="5"></textarea>
+        <label>Age Range: </label>
+         <select name="ArtisanAge" id="ArtisanAge" required>
+            <option value="">Select Range</option>
+            <option value="18-25">18-25</option>
+            <option value="25-30">25-30</option>
+            <option value="30-35">30-35</option>
+            <option value="35-40">35-40</option>
+            <option value="40-45">40-45</option>
+            <option value="45-50">45-50</option>
+            <option value="50-60">50-60</option>
+            <option value="Over 60">Over 60</option>
+          </select>
+        <label>About You: </label>
+        <textarea name="description" placeholder="A small description of you and your work ethic" required rows="5"></textarea>
         <div class="expertise-section">
           <label>Areas of Expertise:</label>
           <div id="expertise-fields"></div>
         </div>
         <label>Number of Years Worked: </label>
-       <input type="number" name="years" placeholder="? Years" required />
+        <input type="number" name="years" placeholder="? Years" required />
 
        <label> <br>Location: </label>
         <div class="input-group">
@@ -61,6 +63,8 @@
           </select>
         </div>
 
+        <label>Availability Schedule: </label>
+        <input type="text" name="availability" placeholder="Mon - Fri, 8AM-9AM" required />
        
         <label> <br>Upload appropriate certifications for verification: </label>
         <div class="file-drop-area" id="drop-area" onclick="document.getElementById('fileInput').click()">
