@@ -132,15 +132,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bound_certifications_json = !empty($certification_files_urls) ? $certifications_json : NULL;
 
     // Bind parameters. They fill the ? in the SQL query
-    $stmt->bind_param("issssssissis",$user_id,$bound_profile_image_url,$first_name,$last_name,
+    $stmt->bind_param("issssssissss",$user_id,$bound_profile_image_url,$first_name,$last_name,
         $age_range,$description,$expertise_json,$years_worked,$county,$sub_county,$availability,$bound_certifications_json
     );
 
     // 6. Execute the statement
     if ($stmt->execute()) {
-        echo "Profile saved successfully!";
-        // Redirect to a confirmation page or the user's dashboard/profile view
-         // Create a profile_view.php later
+    
+        header("Location: viewArtisanProfile.php");
         exit();
     } else {
         echo "Error saving profile: " . $stmt->error;

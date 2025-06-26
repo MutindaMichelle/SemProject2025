@@ -498,6 +498,7 @@ html {
   padding: 20px;
   text-align: center;
   border-right: 1px solid #ddd;
+  margin-left: 35%;
 }
 .profile-sidebar p {
   color: red;
@@ -601,67 +602,59 @@ html {
   background-color: #f0f8ff;
   border-color: #007bff;
 }
-/* Existing CSS for file-preview (container) */
+
 .file-preview {
   margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(120px, 1fr)
-  ); /* Adjust minmax as needed */
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 15px;
 }
 
-/* Existing CSS for preview-box (individual file item) */
 .file-preview .preview-box {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: center;
   font-size: 14px;
-  word-wrap: break-word; /* Ensures long names wrap */
+  word-wrap: break-word;
   background: #f9f9f9;
   border-radius: 5px;
-  display: flex; /* Make it a flex container */
-  flex-direction: column; /* Stack content vertically */
-  align-items: center; /* Center horizontally */
-  justify-content: space-between; /* Push name to bottom if image is tall */
-  min-height: 120px; /* Ensure a consistent height for visual grid */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 120px;
 }
 
-/* Existing CSS for images within preview-box */
 .preview-box img {
   max-width: 100%;
-  max-height: 80px; /* Adjust height for thumbnail */
+  max-height: 80px;
   object-fit: contain;
   display: block;
-  margin-bottom: 5px; /* Space between image/icon and file name */
-}
-
-/* New CSS for generic document icons */
-.preview-box .document-icon {
-  font-size: 50px; /* Large enough for a clear icon */
-  color: #666; /* A neutral color */
   margin-bottom: 5px;
-  line-height: 1; /* Prevent extra space around icon */
 }
 
-/* Style for the file name text inside the preview box */
+.preview-box .document-icon {
+  font-size: 50px;
+  color: #666;
+  margin-bottom: 5px;
+  line-height: 1;
+}
+
 .file-box span {
-  font-size: 12px; /* Smaller font for name */
-  display: block; /* Ensure it takes full width */
-  overflow: hidden; /* Hide overflow text */
-  text-overflow: ellipsis; /* Add ellipsis for long names */
-  white-space: nowrap; /* Prevent wrapping initially to make ellipsis work */
+  font-size: 12px;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* Styling for the remove button */
 .remove-file-btn {
-  position: absolute; /* Position relative to .preview-box */
+  position: absolute;
   top: 5px;
   right: 5px;
-  background-color: rgba(255, 0, 0, 0.7); /* Semi-transparent red */
+  background-color: rgba(255, 0, 0, 0.7);
   color: white;
-  border-radius: 50%; /* Make it circular */
+  border-radius: 50%;
   width: 20px;
   height: 20px;
   display: flex;
@@ -669,34 +662,32 @@ html {
   justify-content: center;
   font-size: 14px;
   cursor: pointer;
-  z-index: 10; /* Ensure it's above the image/icon */
+  z-index: 10;
   font-weight: bold;
-  line-height: 1; /* Adjust for vertical centering */
-  padding-bottom: 1px; /* Fine-tune vertical alignment */
+  line-height: 1;
+  padding-bottom: 1px;
 }
 
 .remove-file-btn:hover {
   background-color: red;
 }
 
-/* Ensure preview-box is positioned relative for the remove button */
 .preview-box {
-  position: relative; /* Crucial for absolute positioning of remove button */
-  /* ... rest of your existing .preview-box styles ... */
-  padding-top: 25px; /* Add padding to make space for the remove button at the top */
+  position: relative;
+
+  padding-top: 25px;
 }
 
-/* Adjustments for file name text */
 .file-name-text {
   font-size: 12px;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 100%; /* Ensure it spans the box for ellipsis */
+  width: 100%;
   text-align: center;
-  box-sizing: border-box; /* Include padding/border in width */
-  padding: 0 5px; /* Small horizontal padding */
+  box-sizing: border-box;
+  padding: 0 5px;
 }
 .upload-icon {
   font-size: 40px;
@@ -705,8 +696,9 @@ html {
 }
 
 .profile-main {
-  width: 70%;
-  padding: 30px;
+  width: 100%;
+  padding: 80px;
+  padding-top: 0px;
 }
 
 .profile-main h2 {
@@ -738,6 +730,239 @@ select {
 input[disabled] {
   background-color: #eee;
   color: #777;
+}
+.profile-sidebar {
+  pointer-events: none;
+}
+
+.upload-btn,
+#uploadBtn {
+  pointer-events: all;
+}
+
+/* Profile Page View*/
+/* General Body and Container Styling */
+
+.profile-container {
+  background-color: #ffffff;
+  border-radius: 12px; /* Softly rounded corners */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  width: 100%;
+  max-width: 800px; /* Max width for larger screens */
+  padding: 30px;
+  box-sizing: border-box;
+  margin-top: 20px; /* Space from top */
+  margin-left: 20%;
+}
+
+/* Page Title */
+.profile-container h1 {
+  font-size: 2.2em;
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+/* Profile Header Section (Image and Basic Info) */
+.profile-header {
+  display: flex;
+  flex-direction: column; /* Stack on small screens */
+  align-items: center;
+  gap: 25px; /* Space between image and info */
+  padding-bottom: 25px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #eee; /* Separator line */
+}
+
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%; /* Circular image */
+  object-fit: cover; /* Ensures image fills the circle */
+  border: 4px solid #4caf50; /* Green border for emphasis */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Shadow for depth */
+}
+
+.header-info {
+  text-align: center;
+  color: #555;
+  line-height: 1.6;
+}
+
+.header-info p {
+  margin: 5px 0;
+  font-size: 1.05em;
+}
+
+.header-info p strong {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Generic Profile Sections (About Me, Expertise, Certifications) */
+.profile-section {
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee; /* Separator line */
+}
+
+.profile-section:last-of-type {
+  border-bottom: none; /* No border for the last section */
+  margin-bottom: 0;
+}
+
+.profile-section h3 {
+  font-size: 1.6em;
+  color: #444;
+  margin-bottom: 15px;
+  position: relative;
+  padding-left: 15px; /* Space for a potential icon/border */
+}
+
+/* Little accent for section titles */
+.profile-section h3::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5px;
+  height: 80%;
+  background-color: #4caf50; /* Green accent */
+  border-radius: 3px;
+}
+
+.profile-section p {
+  font-size: 1.1em;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 10px;
+}
+
+/* Lists (Expertise, Certifications) */
+.profile-section ul {
+  list-style: none; /* Remove default bullet points */
+  padding: 0;
+  margin: 0;
+  display: flex; /* Use flexbox for horizontal layout */
+  flex-wrap: wrap; /* Wrap items to next line */
+  gap: 10px; /* Space between list items */
+}
+
+.profile-section ul li {
+  background-color: #e8f5e9; /* Light green background for tags */
+  color: #2e7d32; /* Darker green text */
+  padding: 8px 15px;
+  border-radius: 20px; /* Pill shape */
+  font-size: 0.95em;
+  font-weight: 500;
+  border: 1px solid #a5d6a7; /* Subtle border */
+  white-space: nowrap; /* Prevent wrapping of individual tags */
+}
+
+.profile-section ul li a {
+  color: #2196f3; /* Blue for links */
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.profile-section ul li a:hover {
+  text-decoration: underline;
+}
+
+/* Edit Profile Button */
+.profile-actions {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.edit-profile-btn {
+  display: inline-block;
+  background-color: #2e7d32;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-profile-btn:hover {
+  background-color: #2e7d32;
+  transform: translateY(-2px); /* Slight lift on hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (min-width: 600px) {
+  .profile-header {
+    flex-direction: row; /* Side-by-side on larger screens */
+    text-align: left; /* Align info to left */
+    justify-content: center; /* Center the entire header block */
+  }
+
+  .profile-pic {
+    margin-right: 25px; /* Space to the right of image */
+  }
+
+  .header-info {
+    text-align: left;
+  }
+
+  .profile-section ul {
+    justify-content: flex-start; /* Align list items to start */
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .profile-container h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+
+  .profile-section h3 {
+    font-size: 1.4em;
+  }
+
+  .profile-section p,
+  .header-info p,
+  .profile-section ul li {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  .profile-container {
+    border-radius: 8px;
+    padding: 15px;
+    margin: 5px;
+  }
+  .profile-pic {
+    width: 120px;
+    height: 120px;
+  }
+  .profile-container h1 {
+    font-size: 1.5em;
+  }
+  .edit-profile-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+  }
+  .profile-section ul li {
+    padding: 6px 12px;
+  }
 }
 
 @keyframes change {
