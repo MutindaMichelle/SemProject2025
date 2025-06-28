@@ -900,9 +900,9 @@ input[disabled] {
 /* Responsive Adjustments */
 @media (min-width: 600px) {
   .profile-header {
-    flex-direction: row; /* Side-by-side on larger screens */
-    text-align: left; /* Align info to left */
-    justify-content: center; /* Center the entire header block */
+    flex-direction: row;
+    text-align: left;
+    justify-content: center;
   }
 
   .profile-pic {
@@ -962,6 +962,676 @@ input[disabled] {
   }
   .profile-section ul li {
     padding: 6px 12px;
+  }
+}
+
+/* Client Dashboard */
+
+.navbar {
+  background-color: white;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 60px;
+  box-sizing: border-box;
+}
+
+.navbar-left,
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.navbar-brand {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #4caf50;
+  text-decoration: none;
+}
+
+.navbar-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.navbar-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-btn.logout-btn {
+  background-color: #f44336;
+}
+
+.navbar-btn.logout-btn:hover {
+  background-color: #d32f2f;
+}
+
+.top-section {
+  background-color: #e3f2fd;
+  padding: 40px 20px;
+  text-align: center;
+  margin-top: -1px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.welcome-message {
+  font-size: 2.8em;
+  color: #212121;
+  margin-bottom: 10px;
+  font-weight: 800;
+}
+
+.tagline {
+  font-size: 1.3em;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.search-bars-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.search-input,
+.search-select {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+  width: 100%;
+  max-width: 280px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-input:focus,
+.search-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  box-sizing: border-box;
+}
+
+.dashboard-content {
+  flex-grow: 1;
+  padding: 30px 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  box-sizing: border-box;
+}
+
+/* Error Messages */
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  border: 1px solid #ef9a9a;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 25px;
+  font-weight: 500;
+}
+
+.artisan-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  padding: 20px 0;
+}
+
+/* --- Individual Artisan Card Styling --- */
+.artisan-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.artisan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-profile-pic {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #66bb6a;
+}
+
+.card-name {
+  font-size: 1.6em;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.card-expertise,
+.card-location,
+.card-years {
+  font-size: 0.95em;
+  color: #666;
+  margin: 5px 0;
+  line-height: 1.4;
+}
+
+/* --- View Profile Button on Card --- */
+.artisan-card .view-profile-btn {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1em;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  border: none;
+  cursor: pointer;
+  width: 80%;
+  max-width: 200px;
+}
+
+.artisan-card .view-profile-btn:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* --- Main Footer Styling --- */
+.main-footer {
+  background-color: #333;
+  color: #ddd;
+  text-align: center;
+  padding: 20px;
+  margin-top: auto;
+  font-size: 0.9em;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.contact-artisan-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.contact-artisan-btn.whatsapp-btn {
+  background-color: #25d366;
+  color: white;
+}
+
+.contact-artisan-btn.whatsapp-btn:hover {
+  background-color: #1da851;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.contact-artisan-btn.whatsapp-btn i {
+  margin-right: 8px;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex-grow: 1;
+  max-width: 280px;
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 5px;
+  line-height: 1;
+  display: none;
+  transition: color 0.2s ease;
+  z-index: 2;
+}
+
+.clear-search-btn:hover {
+  color: #555;
+}
+
+.search-input,
+.search-select {
+  padding-right: 35px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 10px 20px;
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+  }
+  .navbar-right {
+    justify-content: center;
+    width: 100%;
+  }
+  .navbar-btn {
+    flex: 1;
+    max-width: 150px;
+    text-align: center;
+  }
+  .navbar-brand {
+    font-size: 1.5em;
+  }
+
+  .top-section {
+    padding: 30px 15px;
+    margin-bottom: 20px;
+  }
+  .welcome-message {
+    font-size: 2em;
+  }
+  .tagline {
+    font-size: 1.1em;
+  }
+  .search-bars-container {
+    flex-direction: column;
+    max-width: 90%;
+    gap: 10px;
+  }
+  .search-input,
+  .search-select {
+    max-width: 100%;
+  }
+}
+
+.dashboard-content {
+  padding: 20px 10px;
+  margin: 15px auto;
+}
+
+.artisan-cards-container {
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.artisan-card {
+  padding: 20px;
+}
+
+.card-name {
+  font-size: 1.4em;
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 8px 10px;
+  }
+  .navbar-brand {
+    font-size: 1.3em;
+  }
+  .navbar-btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
+  }
+  .top-section {
+    padding: 20px 10px;
+  }
+  .welcome-message {
+    font-size: 1.6em;
+  }
+  .tagline {
+    font-size: 1em;
+  }
+  .dashboard-content {
+    padding: 0 10px;
+  }
+
+  .dashboard-content {
+    padding: 15px 5px;
+    margin: 10px auto;
+  }
+
+  .artisan-cards-container {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 15px;
+  }
+
+  .artisan-card {
+    padding: 15px;
+    margin: 0 5px; /* Small horizontal margin */
+  }
+
+  .card-profile-pic {
+    width: 80px;
+    height: 80px;
+  }
+
+  .card-name {
+    font-size: 1.2em;
+  }
+
+  .card-expertise,
+  .card-location,
+  .card-years {
+    font-size: 0.85em;
+  }
+
+  .artisan-card .view-profile-btn {
+    padding: 8px 15px;
+    font-size: 0.9em;
+    width: 90%;
+  }
+}
+
+/* Post A Job */
+/* Page Tagline */
+p.tagline {
+  text-align: center;
+  font-size: 1.3em;
+  color: #555;
+  margin-top: 30px;
+  margin-bottom: 25px;
+  font-weight: 400;
+}
+
+/* Post Job Form Styling */
+form.post_job_form {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 30px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* Space between form elements */
+  border: 1px solid #e0e0e0;
+}
+
+form.post_job_form label {
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 5px;
+  display: block; /* Ensures label is on its own line */
+}
+
+form.post_job_form input[type="text"],
+form.post_job_form input[type="number"],
+form.post_job_form select,
+form.post_job_form textarea {
+  width: calc(100% - 22px); /* Account for padding and border */
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1em;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fcfcfc;
+}
+
+form.post_job_form input[type="text"]:focus,
+form.post_job_form input[type="number"]:focus,
+form.post_job_form select:focus,
+form.post_job_form textarea:focus {
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+  outline: none;
+}
+
+form.post_job_form textarea {
+  resize: vertical; /* Allow vertical resizing */
+  min-height: 80px; /* Minimum height for description */
+}
+
+/* Checkbox specific styling */
+form.post_job_form input[type="checkbox"] {
+  width: auto; /* Override general input width */
+  margin-right: 8px;
+}
+
+/* File Drop Area */
+.file-drop-area {
+  border: 2px dashed #a8a8a8;
+  border-radius: 10px;
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px; /* Ensure enough space for drop area */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.file-drop-area:hover {
+  background-color: #f0f0f0;
+  border-color: #4caf50;
+}
+
+.file-drop-message {
+  color: #666;
+  font-size: 1.1em;
+}
+
+.upload-icon {
+  font-size: 3em; /* Larger icon */
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+
+/* File Preview Area for Images */
+.file-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Space between preview images */
+  margin-top: 15px;
+  justify-content: center;
+}
+
+.file-preview img {
+  width: 80px; /* Thumbnail size */
+  height: 80px;
+  object-fit: cover; /* Crop images nicely */
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Group for County/Sub-County */
+.input-group {
+  display: flex;
+  gap: 15px; /* Space between county and sub-county selects */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.input-group select {
+  flex: 1; /* Allows selects to grow and shrink */
+  min-width: 180px; /* Minimum width for each select */
+}
+
+/* Submit Button */
+.upload-btn {
+  background-color: #28a745; /* A strong green for action */
+  color: white;
+  padding: 15px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease,
+    box-shadow 0.3s ease;
+  margin-top: 20px;
+  align-self: center; /* Center the button within the flex container */
+  width: 80%; /* Make button wider */
+  max-width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.upload-btn:hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  main.dashboard-content {
+    padding: 15px;
+    margin: 15px auto;
+    border-radius: 8px;
+  }
+
+  .navbar {
+    padding: 10px 15px;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .navbar-right {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .navbar-btn {
+    padding: 6px 12px;
+    font-size: 0.9em;
+  }
+
+  p.tagline {
+    font-size: 1.1em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  form.post_job_form {
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    gap: 15px;
+  }
+
+  form.post_job_form input[type="text"],
+  form.post_job_form input[type="number"],
+  form.post_job_form select,
+  form.post_job_form textarea {
+    padding: 10px;
+    font-size: 0.95em;
+    width: calc(100% - 20px); /* Adjust for smaller padding */
+  }
+
+  .input-group {
+    flex-direction: column; /* Stack county/sub-county on small screens */
+    gap: 10px;
+  }
+
+  .input-group select {
+    width: 100%;
+    min-width: unset; /* Remove min-width constraint */
+  }
+
+  .upload-btn {
+    width: 90%;
+    font-size: 1.1em;
+    padding: 12px 20px;
+  }
+}
+
+form.post_job_form input[type="checkbox"] {
+  width: auto;
+  margin-right: 8px;
+  margin: 0;
+  vertical-align: middle;
+  padding: 0;
+  border: initial;
+  font-size: initial;
+  box-shadow: none;
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-top: -5px;
+  gap: 8px;
+  width: fit-content;
+}
+.checkbox-group label {
+  margin: 0;
+  font-weight: normal; /* Reset if previously bolded by other rules */
+  color: #333;
+}
+
+@media (max-width: 480px) {
+  .navbar-brand {
+    font-size: 1.5em;
+  }
+  .navbar-btn {
+    font-size: 0.8em;
+    padding: 5px 10px;
+  }
+  .file-preview img {
+    width: 60px;
+    height: 60px;
   }
 }
 

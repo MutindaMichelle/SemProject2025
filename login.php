@@ -38,9 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['userType'] = $user['userType'];
 
-            echo "Login successful!";
-            // Redirect to dashboard or home
-            // header("Location: dashboard.php");
+           if ($_SESSION['userType'] === 'client') {
+                header("Location: ClientDashboard.php"); 
+            } elseif ($_SESSION['userType'] === 'artisan') {
+                header("Location: viewArtisanProfile.php"); 
+            } else {
+                header("Location: dashboard.php"); 
+            }
         } else {
             echo "Invalid password!";
         }

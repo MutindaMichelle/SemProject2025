@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Initialize variables for file URLs
     $profile_image_url = null;
     $certification_files_urls = [];
-     $upload_dir = 'uploads/'; // Make sure this directory exists and is writable!
+     $upload_dir = 'uploads/artisan_profiles/'; // Make sure this directory exists and is writable!
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0777, true); // Create directory if it doesn't exist
     }
