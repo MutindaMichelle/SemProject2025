@@ -1,6 +1,11 @@
 <?php
 session_start();
+require_once __DIR__ . '/vendor/autoload.php';
 include("connection.php");
+
+// Load .env
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 if (isset($_POST['submit'])) {
     $name = trim($_POST['name']);
@@ -12,13 +17,13 @@ if (isset($_POST['submit'])) {
     $phone = $countryCode . $halfphone;
     $userType = $_POST['userType'];
 
-    // Basic validation
-    if(empty($name) || empty($email) || empty($password) || empty($confirm) || empty($phone) || empty($userType)) {
+    // Validation
+    if (empty($name) || empty($email) || empty($password) || empty($confirm) || empty($phone) || empty($userType)) {
         echo "All fields are required!";
         exit;
     }
 
-    if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Invalid email format!";
         exit;
     }
@@ -28,17 +33,16 @@ if (isset($_POST['submit'])) {
         exit;
     }
 
-    if(strlen($password) < 8) {
+    if (strlen($password) < 8) {
         echo "Password must be at least 8 characters long!";
         exit;
     }
 
-    if($password !== $confirm) {
+    if ($password !== $confirm) {
         echo "Passwords do not match!";
         exit;
     }
 
-    // Check for duplicate phone
     $stmt = $conn->prepare("SELECT id FROM users WHERE phone = ?");
     $stmt->bind_param("s", $phone);
     $stmt->execute();
@@ -49,9 +53,8 @@ if (isset($_POST['submit'])) {
     }
     $stmt->close();
 
-    // ✅ Generate OTP and store everything in session
+    // Store session
     $otp = rand(100000, 999999);
-
     $_SESSION['pending_user'] = [
         'name' => $name,
         'email' => $email,
@@ -60,10 +63,12 @@ if (isset($_POST['submit'])) {
         'userType' => $userType
     ];
     $_SESSION['otp'] = $otp;
+    $_SESSION['otp_created_at'] = time();
+    $_SESSION['otp_attempts'] = 0;
 
-    // ✅ Send OTP using Africa’s Talking
-    $username = "sandbox"; // or your app username
-    $apiKey = "atsk_eb4d50822f35464bb3646818b4acfc150965fc95c9148847674e7037023255c13793d8c9";
+    // Send SMS
+    $username = $_ENV['AFRICASTALKING_USERNAME'];
+    $apiKey = $_ENV['AFRICASTALKING_API_KEY'];
     $from = "AFRICASTKNG";
     $message = "Your JuaKazi verification code is: $otp";
 
@@ -92,7 +97,6 @@ if (isset($_POST['submit'])) {
     }
     curl_close($ch);
 
-    // ✅ Go to OTP verification page
     header("Location: verify_otp.php");
     exit;
 }

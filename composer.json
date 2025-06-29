@@ -1,0 +1,13 @@
+{
+    "name": "michelle/sem-project2025",
+    "authors": [
+        {
+            "name": "Michelle",
+            "email": "michelle.mutinda@strathmore.edu"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "*",
+        "africastalking/africastalking": "*"
+    }
+}
