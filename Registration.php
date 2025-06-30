@@ -4,7 +4,16 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-include("connection.php"); // Ensure connection.php correctly establishes $conn for MySQLi
+require_once 'connection.php';
+require_once __DIR__ . '/vendor/autoload.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use Dotenv\Dotenv;
+
+// Load .env variables
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 // Get the form values
 if(isset($_POST['submit']))
@@ -73,33 +82,80 @@ if(isset($_POST['submit']))
     // Your original: $sql = "INSERT INTO users (name, email, password, phone, userType) VALUES ('$name', '$email', '$hashedPassword', '$phone','$userType')";
     // Your original: if ($conn->query($sql) === TRUE) {
 
-    $insert_stmt = $conn->prepare("INSERT INTO users (name, email, password, phone, userType) VALUES (?, ?, ?, ?, ?)");
-    if (!$insert_stmt) {
-        echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
-        exit; // Exit if statement preparation fails
+//     $insert_stmt = $conn->prepare("INSERT INTO users (name, email, password, phone, userType) VALUES (?, ?, ?, ?, ?)");
+//     if (!$insert_stmt) {
+//         echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
+//         exit; // Exit if statement preparation fails
+//     }
+//     $insert_stmt->bind_param("sssss", $name, $email, $hashedPassword, $phone, $userType); // 'sssss' for five string parameters
+
+//     if ($insert_stmt->execute()) {
+//         // ADDED: Registration successful! Now, automatically log the user in.
+//         // Get the ID of the newly inserted user (mysqli_insert_id is a property of the connection object)
+//         $new_user_id = $conn->insert_id;
+
+//         // Set session variables
+//         $_SESSION['user_id'] = $new_user_id;
+//         $_SESSION['user_name'] = $name; // Using the name from the form for immediate use
+//         $_SESSION['userType'] = $userType; // Crucial for profile redirection logic
+
+//         // UPDATED: Redirect to the profile creation page instead of created.html
+//         header("Location: created.php");
+//         exit(); // Always call exit() after header() redirects
+//     } else {
+//         // UPDATED: Use $insert_stmt->error for errors from prepared statements
+//         echo "Error: " . $insert_stmt->error;
+//     }
+
+//     $insert_stmt->close(); // Close the statement
+// }
+
+// $conn->close(); // Close the database connection
+
+
+ // Generate OTP
+    $otp = rand(100000, 999999);
+
+    // Store data in session
+    $_SESSION['pending_user'] = [
+        'name' => $name,
+        'email' => $email,
+        'password' => $hashedPassword,
+        'phone' => $phone,
+        'userType' => $userType
+    ];
+    $_SESSION['email_otp'] = $otp;
+    $_SESSION['otp_created_at'] = time();
+    $_SESSION['otp_attempts'] = 0;
+
+    // Send OTP Email using PHPMailer
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = $_ENV['EMAIL_HOST'];
+        $mail->SMTPAuth = true;
+        $mail->Username = $_ENV['EMAIL_USERNAME'];
+        $mail->Password = $_ENV['EMAIL_PASSWORD'];
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = $_ENV['EMAIL_PORT'];
+
+        $mail->setFrom($_ENV['EMAIL_FROM'], $_ENV['EMAIL_FROM_NAME']);
+        $mail->addAddress($email, $name);
+
+        $mail->isHTML(true);
+        $mail->Subject = "JuaKazi OTP Code";
+        $mail->Body = "
+            <h3>Hello $name,</h3>
+            <p>Your OTP is: <strong>$otp</strong></p>
+            <p>This code expires in 5 minutes.</p>
+        ";
+
+        $mail->send();
+        header("Location: verify_email.php");
+        exit;
+    } catch (Exception $e) {
+        echo "Failed to send OTP: " . $mail->ErrorInfo;
+        exit;
     }
-    $insert_stmt->bind_param("sssss", $name, $email, $hashedPassword, $phone, $userType); // 'sssss' for five string parameters
-
-    if ($insert_stmt->execute()) {
-        // ADDED: Registration successful! Now, automatically log the user in.
-        // Get the ID of the newly inserted user (mysqli_insert_id is a property of the connection object)
-        $new_user_id = $conn->insert_id;
-
-        // Set session variables
-        $_SESSION['user_id'] = $new_user_id;
-        $_SESSION['user_name'] = $name; // Using the name from the form for immediate use
-        $_SESSION['userType'] = $userType; // Crucial for profile redirection logic
-
-        // UPDATED: Redirect to the profile creation page instead of created.html
-        header("Location: created.php");
-        exit(); // Always call exit() after header() redirects
-    } else {
-        // UPDATED: Use $insert_stmt->error for errors from prepared statements
-        echo "Error: " . $insert_stmt->error;
-    }
-
-    $insert_stmt->close(); // Close the statement
 }
-
-$conn->close(); // Close the database connection
 ?>
