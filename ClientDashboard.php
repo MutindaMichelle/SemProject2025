@@ -112,7 +112,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'client') {
             };
         }
         async function fetchAndRenderArtisans() {
-            const type = artisanTypeSearchInput.value.trim(); /
+            const type = artisanTypeSearchInput.value.trim(); 
             const county = countySearchSelect.value;
             const sub_county = subCountySearchSelect.value;
 
