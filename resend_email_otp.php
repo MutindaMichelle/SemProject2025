@@ -7,13 +7,14 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use Dotenv\Dotenv;
 
-// 🌍 Load environment variables
+// Load environment variables
 $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
-// 💡 Validate session
+// Check session
 if (!isset($_SESSION['pending_user'])) {
-    echo "<p style='color: red;'>Session expired. Please restart registration.</p>";
+    $_SESSION['error_message'] = "Session expired. Please register again.";
+    header("Location: registration.php");
     exit;
 }
 
@@ -21,9 +22,10 @@ $user = $_SESSION['pending_user'];
 $email = $user['email'];
 $name = $user['name'];
 
-// ⏱️ Cooldown check
+//  Cooldown check
 if (isset($_SESSION['last_resend']) && (time() - $_SESSION['last_resend'] < 60)) {
-    echo "<p style='color: orange;'>Please wait at least 1 minute before resending the OTP.</p>";
+    $_SESSION['error_message'] = "Please wait at least 1 minute before resending OTP.";
+    header("Location: verify_email.php");
     exit;
 }
 

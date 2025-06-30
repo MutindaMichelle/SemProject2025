@@ -12,16 +12,18 @@ if (
     !isset($_SESSION['email_otp']) ||
     !isset($_SESSION['otp_created_at'])
 ) {
-    echo "<p style='color: red;'>Session expired or unauthorized access. Please restart registration.</p>";
-    session_unset(); session_destroy();
+      // REDIRECT instead of inline message
+    $_SESSION['error_message'] = "Session expired. Please register again.";
+    header("Location: registration.php");
     exit;
 }
 
 // ⏰ Check if OTP expired (5 minutes)
 $otpCreated = $_SESSION['otp_created_at'];
 if (time() - $otpCreated > 300) {
-    echo "<p style='color: red;'>OTP has expired. Please restart registration.</p>";
+     $_SESSION['error_message'] = "OTP has expired. Please register again.";
     session_unset(); session_destroy();
+    header("Location: registration.php");
     exit;
 }
 
@@ -30,8 +32,9 @@ if (!isset($_SESSION['otp_attempts'])) {
     $_SESSION['otp_attempts'] = 0;
 }
 if ($_SESSION['otp_attempts'] >= 3) {
-    echo "<p style='color: red;'>Too many incorrect attempts. Please restart registration.</p>";
+       $_SESSION['error_message'] = "Too many incorrect OTP attempts. Please register again.";
     session_unset(); session_destroy();
+    header("Location: registration.php");
     exit;
 }
 
@@ -45,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ((string)$enteredOtp === $storedOtp) {
         $stmt = $conn->prepare("INSERT INTO users (name, email, password, phone, userType) VALUES (?, ?, ?, ?, ?)");
         if (!$stmt) {
-            echo "Prepare failed: (" . $conn->errno . ") " . $conn->error;
+              $_SESSION['error_message'] = "Database error (prepare failed).";
+            header("Location: registration.php");
             exit;
         }
 
@@ -76,15 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: created.php");
             exit;
         } else {
-            echo "<p style='color: red;'>Database error: " . $stmt->error . "</p>";
+            $_SESSION['error_message'] = "Failed to insert into database.";
             $stmt->close(); $conn->close();
+            header("Location: registration.php");
             exit;
         }
     } else {
-        $_SESSION['otp_attempts']++;
+       $_SESSION['otp_attempts']++;
         $remaining = 3 - $_SESSION['otp_attempts'];
-        echo "<p style='color: red;'>Incorrect OTP. You have $remaining attempt(s) left.</p>";
-        exit; // ✅ FIX: Prevent clashing HTML below on error
+        $_SESSION['error_message'] = "Incorrect OTP. You have $remaining attempt(s) left.";
+        header("Location: verify_email.php");
+        exit;
     }
 }
 ?>
