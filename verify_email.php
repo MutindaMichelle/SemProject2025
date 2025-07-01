@@ -77,12 +77,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $stmt->close();
             $conn->close();
-            header("Location: created.php");
+            
+            //header("Location: created.php");
+
+            // Redirect based on user type
+                if ($_SESSION['userType'] === 'client') {
+                    header("Location: ClientDashboard.php");
+                } elseif ($_SESSION['userType'] === 'artisan') {
+                    header("Location: created.php"); // Which leads to ArtisanProfile.html
+                } else {
+                    header("Location: login.php");
+                }
+            echo "Registration successful! Redirecting...";
+            
+            
             exit;
         } else {
             $_SESSION['error_message'] = "Failed to insert into database.";
             $stmt->close(); $conn->close();
             header("Location: registration.php");
+            echo "Database error (execute failed).";
             exit;
         }
     } else {
@@ -90,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $remaining = 3 - $_SESSION['otp_attempts'];
         $_SESSION['error_message'] = "Incorrect OTP. You have $remaining attempt(s) left.";
         header("Location: verify_email.php");
+
         exit;
     }
 }
