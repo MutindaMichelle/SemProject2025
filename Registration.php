@@ -113,7 +113,7 @@ if(isset($_POST['submit']))
 // $conn->close(); // Close the database connection
 
 
- // Generate OTP
+    // Generate OTP
     $otp = rand(100000, 999999);
 
     // Store data in session
@@ -138,6 +138,17 @@ if(isset($_POST['submit']))
         $mail->Password = $_ENV['EMAIL_PASSWORD'];
         $mail->SMTPSecure = 'tls';
         $mail->Port = $_ENV['EMAIL_PORT'];
+ 
+        // Keep this block for now, as it's what allowed the email to send.
+        // Remember to remove it for production environments due to security risks.
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+    
 
         $mail->setFrom($_ENV['EMAIL_FROM'], $_ENV['EMAIL_FROM_NAME']);
         $mail->addAddress($email, $name);
