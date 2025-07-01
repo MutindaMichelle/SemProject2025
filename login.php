@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            if ($_SESSION['userType'] === 'client') {
                 header("Location: ClientDashboard.php"); 
             } elseif ($_SESSION['userType'] === 'artisan') {
-                header("Location: viewArtisanProfile.php"); 
+                header("Location: ArtisanDashboard.php"); 
             } else {
                 header("Location: dashboard.php"); 
             }
