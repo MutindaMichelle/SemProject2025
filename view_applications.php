@@ -106,6 +106,7 @@ $result = $stmt->get_result();
                     <p><strong>Proposed Budget:</strong> <?php echo htmlspecialchars($row['proposed_budget']); ?></p>
                 <?php endif; ?>
                 <p><small>Applied on: <?php echo date("F j, Y, g:i a", strtotime($row['applied_at'])); ?></small></p>
+                <a href="viewArtisanProfile.php" class="view-profile-btn">View Full Profile</a>
             </div>
         <?php endwhile; ?>
     <?php endif; ?>
