@@ -15,28 +15,7 @@ header("Expires: 0"); // Proxies
 $redirectMessage = urlencode("You have been successfully logged out.");
 echo "<script>alert('You have been successfully logged out.');</script>";
 
-// Redirect to login page (add ?loggedout=1 or message if desired)
+// Redirect /.to login page (add ?loggedout=1 or message if desired)
 header("Location: index.html?message=$redirectMessage");
 exit();
 ?>
-<?php
-session_start();
-$_SESSION = array();
-
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(
-        session_name(),
-        '',
-        time() - 42000,
-        $params["path"],
-        $params["domain"],
-        $params["secure"],
-        $params["httponly"]
-    );
-}
-
-// Finally, destroy the session
-session_destroy();
-header("Location: index.html");
-exit();
