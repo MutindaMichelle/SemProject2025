@@ -1,11 +1,36 @@
 <?php
+
+//Hey Michelle! To this page i added a navbar, added functionality to fetch the profile image from the database for
+// the nav bar, made the page responsive, and made it green themed.
+
+
 session_start();
 include("connection.php");
 
+// Check if the user is logged in AND is an artisan
 if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'artisan') {
     header("Location: login.php");
     exit();
 }
+
+$user_id = $_SESSION['user_id']; // Get the logged-in user's ID
+
+// --- NEW: Fetch artisan profile for the navbar image ---
+$artisan_profile_sql = "SELECT profile_image_url FROM artisans WHERE user_id = ?";
+$artisan_profile_stmt = $conn->prepare($artisan_profile_sql);
+if ($artisan_profile_stmt) {
+    $artisan_profile_stmt->bind_param("i", $user_id);
+    $artisan_profile_stmt->execute();
+    $artisan_profile_result = $artisan_profile_stmt->get_result();
+    $artisan = $artisan_profile_result->fetch_assoc(); // Populate $artisan variable
+    $artisan_profile_stmt->close();
+} else {
+    // Handle error if statement preparation fails
+    error_log("Failed to prepare artisan profile statement in job_details.php: " . $conn->error);
+    $artisan = ['profile_image_url' => '']; // Set a default empty value to prevent errors
+}
+// --- END NEW ---
+
 
 if (!isset($_GET['job_id'])) {
     echo "Job not found.";
@@ -36,10 +61,98 @@ $conn->close();
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Job Details</title>
     <link rel="stylesheet" href="style.css">
     <style>
+        /* General Body Styles */
+        body {
+            font-family: "Inter", sans-serif;
+            background-color: #f0f2f5;
+            /* Light grey background */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navbar Styles (copied from ArtisanDashboard.php for consistency) */
+        .navbar {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            box-sizing: border-box;
+        }
+
+        .navbar-left,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #4CAF50;
+            /* Primary Green */
+            text-decoration: none;
+        }
+
+        .navbar-btn {
+            background-color: #4CAF50;
+            /* Primary Green */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar-btn:hover {
+            background-color: #388E3C;
+            /* Darker Green */
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-btn.logout-btn {
+            background-color: #f44336;
+            /* Red for logout button */
+        }
+
+        .navbar-btn.logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Navbar Profile Picture */
+        .navbar-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4CAF50;
+            /* Primary Green border */
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .navbar-profile-pic:hover {
+            transform: scale(1.05);
+        }
+
         /* CARD STYLE */
         .job-card {
             max-width: 800px;
@@ -47,15 +160,17 @@ $conn->close();
             padding: 25px;
             background-color: #ffffff;
             border: 1px solid #ddd;
-            border-left: 5px solid #3498db;
+            border-left: 5px solid #4CAF50;
+            /* Green accent */
             border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .job-card h1 {
             font-size: 28px;
             margin-bottom: 15px;
-            color: #2c3e50;
+            color: #1E5128;
+            /* Deep Green */
         }
 
         .job-card p {
@@ -93,21 +208,103 @@ $conn->close();
         }
 
         .btn-apply {
-            background-color: #27ae60;
+            background-color: #4CAF50;
+            /* Primary Green */
             color: white;
         }
 
         .btn-back {
             background-color: #bdc3c7;
+            /* Grey for back button */
             color: #2c3e50;
         }
 
         .btn:hover {
             opacity: 0.9;
         }
+
+        /* Responsive Adjustments (copied from ArtisanDashboard.php for consistency) */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 10px 20px;
+                flex-direction: column;
+                /* Stack navbar items */
+                height: auto;
+            }
+
+            .navbar-left,
+            .navbar-right {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+                gap: 10px;
+            }
+
+            .navbar-brand {
+                font-size: 1.5em;
+            }
+
+            .navbar-btn {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .navbar-profile-pic {
+                width: 35px;
+                height: 35px;
+                border-width: 1px;
+            }
+
+            .job-card {
+                margin: 15px auto;
+                padding: 15px;
+            }
+
+            .button-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-card h1 {
+                font-size: 24px;
+            }
+
+            .job-card p {
+                font-size: 14px;
+            }
+
+            .btn {
+                font-size: 14px;
+                padding: 8px 15px;
+            }
+        }
     </style>
 </head>
+
 <body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="ArtisanDashboard.php" class="navbar-brand">JuaKazi</a>
+            <!-- Add other left-aligned links if any -->
+        </div>
+        <div class="navbar-right">
+            <!-- Profile Picture Link (now with fetched $artisan data) -->
+            <a href="viewArtisanProfile.php">
+                <?php if (!empty($artisan['profile_image_url'])): ?>
+                    <img src="<?php echo htmlspecialchars($artisan['profile_image_url']); ?>" alt="Profile Picture" class="navbar-profile-pic">
+                <?php else: ?>
+                    <img src="images/default_profile.jpg" alt="Default Profile" class="navbar-profile-pic">
+                <?php endif; ?>
+            </a>
+            <a href="logout.php" class="navbar-btn logout-btn">Logout</a>
+        </div>
+    </nav>
 
     <div class="job-card">
         <h1><?php echo htmlspecialchars($job['job_title']); ?></h1>
@@ -130,4 +327,5 @@ $conn->close();
     </div>
 
 </body>
+
 </html>

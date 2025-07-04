@@ -1,4 +1,6 @@
 <?php
+//should i permanently change the database name to jua_kazi?
+// kukiwa na shida please chande this
 $servername = "localhost";
 $username = "root";
 $password = "";
