@@ -1,8 +1,8 @@
 <?php
 session_start(); //starts the session
 ini_set('display_errors', 1); //tells php to display all errors on the screen
-ini_set('display_startup_errors', 1);//display startup errors
-error_reporting(E_ALL);//report every error
+ini_set('display_startup_errors', 1); //display startup errors
+error_reporting(E_ALL); //report every error
 include("connection.php"); // Include your database connection file
 
 
@@ -20,7 +20,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'artisan') {
 }
 
 // Get the logged-in user's ID
-$user_id = $_SESSION['user_id']; 
+$user_id = $_SESSION['user_id'];
 
 // Check if the form was submitted via POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -30,26 +30,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $last_name = trim($_POST['last_name'] ?? '');
     $age_range = trim($_POST['ArtisanAge'] ?? '');
     $description = trim($_POST['description'] ?? '');
-    $years_worked = (int)($_POST['years'] ?? 0); 
+    $years_worked = (int)($_POST['years'] ?? 0);
     $county = trim($_POST['county'] ?? '');
-    $sub_county = trim($_POST['sub-county'] ?? ''); 
+    $sub_county = trim($_POST['sub-county'] ?? '');
     $availability = trim($_POST['availability'] ?? '');
 
     // expertise[] will be an array; json_encode it for storage
     $expertise = $_POST['expertise'] ?? [];
     // Filter out any empty expertise fields from dynamic inputs
-    $expertise = array_filter($expertise, function($value) {
+    $expertise = array_filter($expertise, function ($value) {
         return !empty(trim($value));
     });
     $expertise_json = json_encode(array_values($expertise)); // array_values to re-index array numerically if needed
-     $expertise = array_filter($expertise, function($value) {
+    $expertise = array_filter($expertise, function ($value) {
         return !empty(trim($value));
     });
     $expertise_json = json_encode(array_values($expertise));
     // Initialize variables for file URLs
     $profile_image_url = null;
     $certification_files_urls = [];
-     $upload_dir = 'uploads/artisan_profiles/'; // Make sure this directory exists and is writable!
+    $upload_dir = 'uploads/artisan_profiles/'; // Make sure this directory exists and is writable!
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0777, true); // Create directory if it doesn't exist
     }
@@ -75,7 +75,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $target_file = $upload_dir . $file_name;
 
                 if (move_uploaded_file($tmp_name, $target_file)) {
-                    $certification_files_urls[] = $target_file; 
+                    $certification_files_urls[] = $target_file;
                 } else {
                     echo "Failed to upload certification file: " . htmlspecialchars($_FILES['uploaded_file']['name'][$key]) . "<br>";
                 }
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: Please fill in all required text fields.";
         exit;
     }
-    
+
     // Check if years_worked is a positive integer
     if ($years_worked < 0) {
         echo "Error: Years worked cannot be negative.";
@@ -97,7 +97,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 5. Preparation of SQL Statement
-8    //Hello Chambira, I might have changed the artisan_id to user_id in the SQL query below, please check if it works as expected.
+    //Hello Chambira, I might have changed the artisan_id to user_id in the SQL query below, please check if it works as expected.
     // This is because artisan_id was not defined in the form, but user_id is the logged-in user's ID.
     // If artisan_id is needed, you can change it back to artisan_id and ensure it's defined in the form.
     //inserts new artisan
@@ -135,13 +135,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $bound_certifications_json = !empty($certification_files_urls) ? $certifications_json : NULL;
 
     // Bind parameters. They fill the ? in the SQL query
-    $stmt->bind_param("issssssissss",$user_id,$bound_profile_image_url,$first_name,$last_name,
-        $age_range,$description,$expertise_json,$years_worked,$county,$sub_county,$availability,$bound_certifications_json
+    $stmt->bind_param(
+        "issssssissss",
+        $user_id,
+        $bound_profile_image_url,
+        $first_name,
+        $last_name,
+        $age_range,
+        $description,
+        $expertise_json,
+        $years_worked,
+        $county,
+        $sub_county,
+        $availability,
+        $bound_certifications_json
     );
 
     // 6. Execute the statement
     if ($stmt->execute()) {
-    
+
         header("Location:ArtisanDashboard.php"); // Redirect to Artisan Dashboard after successful save
         echo "<script>alert('Profile saved successfully!');</script>";
         exit();
@@ -151,9 +163,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->close();
     $conn->close();
-
 } else {
     // If someone tries to access this page directly without POST submission
     echo "Access denied. This page should be accessed via form submission.";
 }
-?>
