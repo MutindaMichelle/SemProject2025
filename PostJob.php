@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <body>
     <nav class="navbar">
         <div class="navbar-left">
-            <a href="ClientDashboard" class="navbar-brand">JuaKazi</a>
+            <a href="ClientDashboard.php" class="navbar-brand">JuaKazi</a>
         </div>
         <div class="navbar-right">
             <a href="logout.php" class="navbar-btn logout-btn">Logout</a>
