@@ -3,6 +3,10 @@
 // added a profile icon to the navbar and removed the profile part
 // of the page.
 
+
+//CHANGE TWO OF THE NIGHT:
+//I added a functionality for the artisans to see the jobs
+//they've applied to.
 session_start();
 require_once 'connection.php'; // Adjust if your file is named differently
 
@@ -188,6 +192,37 @@ $jobs_result = $jobs_stmt->get_result();
             font-size: 1.3em;
             color: #555;
             margin-bottom: 30px;
+        }
+
+        .jobs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #E8F5E9;
+            /* Light Green border */
+            padding-bottom: 0.5rem;
+        }
+
+        .view-applications-btn {
+            background-color: #4CAF50;
+            /* Primary Green */
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap;
+            /* Prevent button text from wrapping */
+        }
+
+        .view-applications-btn:hover {
+            background-color: #388E3C;
+            /* Darker Green */
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         /* Main Content Container */
@@ -510,7 +545,10 @@ $jobs_result = $jobs_stmt->get_result();
 
         <!-- ✅ Matching Jobs -->
         <div class="jobs-section">
-            <h3>Matching Jobs Based on Your Location</h3>
+            <div class="jobs-header">
+                <h3>Matching Jobs Based on Your Location</h3>
+                <a href="ArtisanViewApplications.php" class="view-applications-btn">View My Applications</a>
+            </div>
             <div class="job-grid">
                 <?php if ($jobs_result->num_rows > 0): ?>
                     <?php while ($job = $jobs_result->fetch_assoc()): ?>
