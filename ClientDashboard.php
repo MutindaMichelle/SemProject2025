@@ -17,6 +17,23 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'client') {
     exit();
 }
 
+//Hello again! This is the Client Dashboard page. 
+//Here I am adding functionality to fetch and display the client's posted jobs.
+// ADDED: Fetch client's posted jobs
+$client_id = $_SESSION['user_id'];
+$jobs = [];
+$stmt = $conn->prepare("SELECT id AS job_id, job_title FROM jobs_posted WHERE client_id = ?"); //We are going to cry here. I have updated the query to use 'id' as job_id for consistency.
+// $stmt = $conn->prepare("SELECT job_id, job_title FROM jobs_posted WHERE client_id = ?");
+// Note: Using 'id' as job_id for consistency with the artisan dashboard.
+$stmt->bind_param("i", $client_id);
+$stmt->execute();
+$res = $stmt->get_result();
+while ($row = $res->fetch_assoc()) {
+    $jobs[] = $row;
+}
+$stmt->close();
+// END ADDED
+
 ?>
 
 <!DOCTYPE html>
@@ -52,6 +69,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'client') {
                 </div>
             <?php endif; ?>
 
+            <!-- Search Bars for Artisan Type, County, and Sub County -->
             <div class="search-bars-container">
                 <div class="search-input-wrapper">
                     <input type="text" name="artisan_type_search" id="artisanTypeSearch" placeholder="Type of artisan needed (e.g., Plumber)" class="search-input">
@@ -82,15 +100,88 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'client') {
             </div>
         </section>
 
-        <!-- Artisan Cards Container (Initially empty, JavaScript will populate) -->
-        <div class="artisan-cards-container">
-            <p class="loading-message" style="text-align: center; padding: 20px;">Loading artisans...</p>
-        </div>
+               <!-- ADDED: View Applications Section -->
+                 <!-- Displaying the client's posted jobs -->
+                    <section class="posted-jobs classy-jobs">
+                <h2>Your Posted Jobs</h2>
+                <?php if (empty($jobs)): ?>
+                    <p>You have not posted any jobs yet.</p>
+                <?php else: ?>
+                    <ul class="job-list">
+                        <?php foreach ($jobs as $job): ?>
+                            <li class="job-item">
+                                <span class="job-title"><?php echo htmlspecialchars($job['job_title']); ?></span>
+                                <a href="view_applications.php?job_id=<?php echo $job['job_id']; ?>" class="btn-primary">View Applications</a>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+            </section>
+
+            <!-- END ADDED -->
+
+              <!-- Artisan Cards Container (Initially empty, JavaScript will populate) -->
+            <div class="artisan-cards-container">
+                <p class="loading-message" style="text-align: center; padding: 20px;">Loading artisans...</p>
+            </div>
+
+
     </main>
 
     <footer class="main-footer">
         <p>&copy; <?php echo date("Y"); ?> JuaKazi. All rights reserved.</p>
     </footer>
+
+    <!--Styles for viewing applications button-->
+     <style>
+    /* ADDED: Simple button for View Applications */
+  /* Posted Jobs Section */
+.classy-jobs {
+    margin-top: 40px;
+    padding: 30px 20px;
+    background-color: #f9fafc;
+    border-top: 1px solid #ddd;
+}
+
+.classy-jobs h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2c3e50;
+}
+
+/* Remove list dots and style */
+.job-list {
+    list-style: none;
+    padding-left: 0;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.job-item {
+    background-color: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    transition: box-shadow 0.3s ease;
+}
+
+.job-item:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+}
+
+.job-title {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+}
+
+    /*  END ADDED */
+    </style>
 
     <script>
         // --- Global References ---
@@ -112,7 +203,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'client') {
             };
         }
         async function fetchAndRenderArtisans() {
-            const type = artisanTypeSearchInput.value.trim(); /
+            const type = artisanTypeSearchInput.value.trim(); 
             const county = countySearchSelect.value;
             const sub_county = subCountySearchSelect.value;
 

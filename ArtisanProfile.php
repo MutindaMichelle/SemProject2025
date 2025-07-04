@@ -97,9 +97,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // 5. Preparation of SQL Statement
+8    //Hello Chambira, I might have changed the artisan_id to user_id in the SQL query below, please check if it works as expected.
+    // This is because artisan_id was not defined in the form, but user_id is the logged-in user's ID.
+    // If artisan_id is needed, you can change it back to artisan_id and ensure it's defined in the form.
     //inserts new artisan
     $sql = "INSERT INTO artisans (
-                artisan_id, profile_image_url, first_name, last_name, age_range,
+                user_id, profile_image_url, first_name, last_name, age_range,
                 description, expertise, years_worked, county, sub_county,
                 availability, certifications
             ) VALUES (
@@ -139,7 +142,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // 6. Execute the statement
     if ($stmt->execute()) {
     
-        header("Location: viewArtisanProfile.php");
+        header("Location:ArtisanDashboard.php"); // Redirect to Artisan Dashboard after successful save
+        echo "<script>alert('Profile saved successfully!');</script>";
         exit();
     } else {
         echo "Error saving profile: " . $stmt->error;
