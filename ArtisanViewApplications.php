@@ -1,10 +1,9 @@
 <?php
-
-// This page handles the artisan viewing the pages they've applied to,
-// as well as deleting some applications
 session_start();
 include("connection.php"); // Your database connection file
 
+// This page handles the artisan viewing the pages they've applied to,
+// as well as deleting some applications
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -538,7 +537,7 @@ $conn->close();
                         <?php endif; ?>
 
                         <div class="application-actions">
-                            <a href="job_details.php?job_id=<?php echo htmlspecialchars($app['job_id']); ?>" class="btn">View Job Details</a>
+
                             <?php if ($app['status'] === 'pending' || $app['status'] === 'withdrawn'): ?>
                                 <!-- Only allow deletion if status is pending or withdrawn -->
                                 <form method="POST" style="display: inline-block;">

@@ -1,11 +1,9 @@
 <?php
-
+session_start();
+include("connection.php");
 //Hey Michelle! To this page i added a navbar, added functionality to fetch the profile image from the database for
 // the nav bar, made the page responsive, and made it green themed.
 
-
-session_start();
-include("connection.php");
 
 // Check if the user is logged in AND is an artisan
 if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'artisan') {

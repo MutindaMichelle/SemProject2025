@@ -1,4 +1,7 @@
 <?php
+session_start();
+require_once 'connection.php';
+
 // I added a navbar to this page, made it green and responsive
 // added a profile icon to the navbar and removed the profile part
 // of the page.
@@ -45,13 +48,21 @@ $artisan_id = $artisan['artisan_id'];
 $county = $artisan['county'];
 
 $jobs_sql = "
-    SELECT j.*, u.name AS client_name
+    SELECT j.*, u.name AS client_name, j.status
     FROM jobs_posted j
     JOIN users u ON j.client_id = u.id
-    WHERE j.required_expertise IN (
-        SELECT expertise_name FROM artisan_expertise WHERE artisan_id = ?
+    WHERE (
+        j.required_expertise IN (
+            SELECT expertise_name FROM artisan_expertise WHERE artisan_id = ?
+        )
+        OR j.county = ?
     )
-    OR j.county = ?
+    AND j.status = 'open' -- Filter to show only open jobs
+    AND NOT EXISTS ( -- ADDED: Filter out jobs the artisan has already applied for
+        SELECT 1
+        FROM job_applications ja
+        WHERE ja.job_id = j.id AND ja.artisan_id = ?
+    )
     ORDER BY
         CASE
             WHEN j.urgency = 'VERY URGENT!' THEN 1
@@ -62,7 +73,7 @@ $jobs_sql = "
         j.id DESC
 ";
 $jobs_stmt = $conn->prepare($jobs_sql);
-$jobs_stmt->bind_param("is", $artisan_id, $county);
+$jobs_stmt->bind_param("isi", $artisan_id, $county, $artisan_id);
 $jobs_stmt->execute();
 $jobs_result = $jobs_stmt->get_result();
 ?>
@@ -432,6 +443,17 @@ $jobs_result = $jobs_stmt->get_result();
             /* Darker Green */
         }
 
+        .job-status-info {
+            background-color: #f0f0f0;
+            color: #555;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 600;
+            text-align: center;
+            flex-grow: 1;
+        }
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .container {
@@ -563,8 +585,16 @@ $jobs_result = $jobs_stmt->get_result();
                             </div>
                             <p><?php echo htmlspecialchars($job['job_description']); ?></p>
                             <div class="job-actions">
-                                <a href="job_details.php?job_id=<?php echo $job['id']; ?>">View Details</a>
-                                <a href="apply_job.php?job_id=<?php echo $job['id']; ?>">Apply</a>
+                                <?php
+                                // Always show View Details button
+                                //echo '<a href="job_details.php?job_id=' . $job['id'] . '" class="job-action-btn">View Details</a>';
+                                if (isset($job['status']) && $job['status'] === 'open') {
+                                    echo '<a href="apply_job.php?job_id=' . $job['id'] . '" class="job-action-btn apply-btn">Apply</a>';
+                                    echo '<a href="job_details.php?job_id=' . $job['id'] . '" class="job-action-btn">View Details</a>';
+                                } else {
+                                    echo '<span class="job-status-info">Status: ' . htmlspecialchars(ucfirst($job['status'] ?? 'Unknown')) . '</span>';
+                                }
+                                ?>
                             </div>
                         </div>
                     <?php endwhile; ?>

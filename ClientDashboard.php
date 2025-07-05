@@ -9,12 +9,13 @@ include("connection.php");
 $job_post_success_message = '';
 if (isset($_SESSION['job_post_success']) && $_SESSION['job_post_success'] === true) {
     $job_post_success_message = "Your job has been posted successfully!";
-    unset($_SESSION['job_post_success']); 
+    unset($_SESSION['job_post_success']);
 }
 
 if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'client') {
-    header("Location: login.php");
-    exit();
+    //header("Location: login.php");
+    //exit();
+    echo "DEBUG: Session lost or user type mismatch. User ID: " . ($_SESSION['user_id'] ?? 'NOT SET') . ", User Type: " . ($_SESSION['userType'] ?? 'NOT SET');
 }
 
 //Hello again! This is the Client Dashboard page. 
@@ -38,6 +39,7 @@ $stmt->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,6 +47,7 @@ $stmt->close();
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
@@ -54,7 +57,7 @@ $stmt->close();
         <div class="navbar-right">
             <a href="PostJob.php" class="navbar-btn post-job-btn">Post a Job</a>
             <a href="logout.php" class="navbar-btn logout-btn">Logout</a>
-            
+
         </div>
     </nav>
 
@@ -65,7 +68,7 @@ $stmt->close();
             <p class="tagline">Find skilled artisans near you.</p>
             <?php if (!empty($job_post_success_message)): ?>
                 <div class="success-message" style="color: green; text-align: center; margin-top: 20px; padding: 15px; background-color: #eafaea; border: 1px solid #28a745; border-radius: 8px; max-width: 800px; margin-left: auto; margin-right: auto;">
-                <p><?php echo htmlspecialchars($job_post_success_message); ?></p>
+                    <p><?php echo htmlspecialchars($job_post_success_message); ?></p>
                 </div>
             <?php endif; ?>
 
@@ -100,30 +103,30 @@ $stmt->close();
             </div>
         </section>
 
-               <!-- ADDED: View Applications Section -->
-                 <!-- Displaying the client's posted jobs -->
-                    <section class="posted-jobs classy-jobs">
-                <h2>Your Posted Jobs</h2>
-                <?php if (empty($jobs)): ?>
-                    <p>You have not posted any jobs yet.</p>
-                <?php else: ?>
-                    <ul class="job-list">
-                        <?php foreach ($jobs as $job): ?>
-                            <li class="job-item">
-                                <span class="job-title"><?php echo htmlspecialchars($job['job_title']); ?></span>
-                                <a href="view_applications.php?job_id=<?php echo $job['job_id']; ?>" class="btn-primary">View Applications</a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
-                <?php endif; ?>
-            </section>
+        <!-- ADDED: View Applications Section -->
+        <!-- Displaying the client's posted jobs -->
+        <section class="posted-jobs classy-jobs">
+            <h2>Your Posted Jobs</h2>
+            <?php if (empty($jobs)): ?>
+                <p>You have not posted any jobs yet.</p>
+            <?php else: ?>
+                <ul class="job-list">
+                    <?php foreach ($jobs as $job): ?>
+                        <li class="job-item">
+                            <span class="job-title"><?php echo htmlspecialchars($job['job_title']); ?></span>
+                            <a href="view_applications.php?job_id=<?php echo $job['job_id']; ?>" class="btn-primary">View Applications</a>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php endif; ?>
+        </section>
 
-            <!-- END ADDED -->
+        <!-- END ADDED -->
 
-              <!-- Artisan Cards Container (Initially empty, JavaScript will populate) -->
-            <div class="artisan-cards-container">
-                <p class="loading-message" style="text-align: center; padding: 20px;">Loading artisans...</p>
-            </div>
+        <!-- Artisan Cards Container (Initially empty, JavaScript will populate) -->
+        <div class="artisan-cards-container">
+            <p class="loading-message" style="text-align: center; padding: 20px;">Loading artisans...</p>
+        </div>
 
 
     </main>
@@ -133,54 +136,54 @@ $stmt->close();
     </footer>
 
     <!--Styles for viewing applications button-->
-     <style>
-    /* ADDED: Simple button for View Applications */
-  /* Posted Jobs Section */
-.classy-jobs {
-    margin-top: 40px;
-    padding: 30px 20px;
-    background-color: #f9fafc;
-    border-top: 1px solid #ddd;
-}
+    <style>
+        /* ADDED: Simple button for View Applications */
+        /* Posted Jobs Section */
+        .classy-jobs {
+            margin-top: 40px;
+            padding: 30px 20px;
+            background-color: #f9fafc;
+            border-top: 1px solid #ddd;
+        }
 
-.classy-jobs h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #2c3e50;
-}
+        .classy-jobs h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
 
-/* Remove list dots and style */
-.job-list {
-    list-style: none;
-    padding-left: 0;
-    max-width: 800px;
-    margin: 0 auto;
-}
+        /* Remove list dots and style */
+        .job-list {
+            list-style: none;
+            padding-left: 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-.job-item {
-    background-color: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 15px 20px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-    transition: box-shadow 0.3s ease;
-}
+        .job-item {
+            background-color: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.3s ease;
+        }
 
-.job-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-}
+        .job-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+        }
 
-.job-title {
-    font-weight: bold;
-    font-size: 16px;
-    color: #333;
-}
+        .job-title {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
 
-    /*  END ADDED */
+        /*  END ADDED */
     </style>
 
     <script>
@@ -193,7 +196,8 @@ $stmt->close();
         const clearCountySearchBtn = document.getElementById('clearCountySearchBtn');
         const clearSubCountySearchBtn = document.getElementById('clearSubCountySearchBtn');
 
-        let allCountiesData = []; 
+        let allCountiesData = [];
+
         function debounce(func, delay) {
             let timeout;
             return function(...args) {
@@ -203,7 +207,7 @@ $stmt->close();
             };
         }
         async function fetchAndRenderArtisans() {
-            const type = artisanTypeSearchInput.value.trim(); 
+            const type = artisanTypeSearchInput.value.trim();
             const county = countySearchSelect.value;
             const sub_county = subCountySearchSelect.value;
 
@@ -215,7 +219,7 @@ $stmt->close();
 
             // Dynamically determine the base path to correctly locate PHP backend script
             const basePath = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1);
-            const url = basePath + 'SearchClientDashboard.php?' + params.toString(); 
+            const url = basePath + 'SearchClientDashboard.php?' + params.toString();
 
             // Display loading indicator while fetching
             artisanCardsContainer.innerHTML = '<p class="loading-message" style="text-align: center; padding: 20px;">Loading artisans...</p>';
@@ -230,21 +234,22 @@ $stmt->close();
                             errorDetails += ` | Server Message: ${errorJson.error}`;
                         }
                     } catch (jsonError) {
-                        
+
                     }
-                    throw new Error(errorDetails); 
+                    throw new Error(errorDetails);
                 }
-                const artisans = await response.json(); 
-                renderArtisanCards(artisans); 
+                const artisans = await response.json();
+                renderArtisanCards(artisans);
 
             } catch (error) {
                 console.error('Error fetching artisans:', error);
                 artisanCardsContainer.innerHTML = `<p class="error-message" style="text-align: center; padding: 20px; color: red;">Failed to load artisans. Please try again. Details: ${error.message}</p>`;
             }
-            updateClearButtonVisibility(); 
+            updateClearButtonVisibility();
         }
+
         function renderArtisanCards(artisans) {
-            artisanCardsContainer.innerHTML = ''; 
+            artisanCardsContainer.innerHTML = '';
             if (!Array.isArray(artisans) || artisans.length === 0) {
                 artisanCardsContainer.innerHTML = '<p class="no-results-message" style="text-align: center; padding: 20px;">No artisans found matching your criteria.</p>';
                 return;
@@ -301,7 +306,7 @@ $stmt->close();
             });
         }
 
-        
+
         function updateClearButtonVisibility() {
             // Artisan Type Search
             if (clearArtisanTypeSearchBtn) {
@@ -384,9 +389,9 @@ $stmt->close();
             subCountySearchSelect.innerHTML = '<option value="">Select Sub County</option>'; // Always clear first
 
             if (selectedCountyName && allCountiesData.length > 0) {
-                
+
                 const selectedCounty = allCountiesData.find(county => county.name.trim() === selectedCountyName.trim());
-                
+
                 if (selectedCounty && Array.isArray(selectedCounty.sub_counties)) {
                     selectedCounty.sub_counties.sort().forEach(subCounty => {
                         const option = document.createElement('option');
@@ -403,10 +408,11 @@ $stmt->close();
 
         // --- Initial Load of Data and Dropdowns when the page is ready ---
         document.addEventListener('DOMContentLoaded', async () => {
-            await loadCounties(); 
-            fetchAndRenderArtisans(); 
-            updateClearButtonVisibility(); 
+            await loadCounties();
+            fetchAndRenderArtisans();
+            updateClearButtonVisibility();
         });
     </script>
 </body>
+
 </html>

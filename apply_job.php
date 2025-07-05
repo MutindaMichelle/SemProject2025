@@ -1,9 +1,9 @@
 <?php
+session_start();
+include("connection.php");
 //This page now prevents duplicate applications,
 //includes php session error messages, and emphasises on
 // the pending status.
-session_start();
-include("connection.php");
 
 // Set display errors for debugging (can be removed in production)
 ini_set('display_errors', 1);
