@@ -9,12 +9,12 @@ include("connection.php");
 
 $artisan_profile = null;
 $error_message = '';
-$artisan_to_view_id = null; 
-$is_viewing_own_profile = false; 
+$artisan_to_view_id = null;
+$is_viewing_own_profile = false;
 
 // Priority 1: Check if 'artisan_id' is provided in the URL (e.g., from client_dashboard.php)
 if (isset($_GET['artisan_id'])) {
-    $artisan_to_view_id = (int)$_GET['artisan_id']; 
+    $artisan_to_view_id = (int)$_GET['artisan_id'];
     // Check if the currently logged-in user is an artisan viewing their OWN profile
     if (isset($_SESSION['user_id']) && $_SESSION['userType'] === 'artisan' && $_SESSION['user_id'] == $artisan_to_view_id) {
         $is_viewing_own_profile = true;
@@ -80,9 +80,8 @@ if ($artisan_to_view_id) {
             } else {
                 $artisan_profile['certifications'] = [];
             }
-
         } else {
-           
+
             if ($is_viewing_own_profile) {
                 echo "
                     <script>
@@ -99,12 +98,10 @@ if ($artisan_to_view_id) {
         }
 
         $stmt->close();
-
     } catch (Exception $e) {
         // This catches general database/preparation errors, not just 0 rows.
         $error_message = "An error occurred while fetching profile: " . $e->getMessage();
         error_log($error_message);
-       
     } finally {
         if (isset($conn) && $conn instanceof mysqli) {
             $conn->close();
@@ -114,14 +111,109 @@ if ($artisan_to_view_id) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artisan Profile</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .navbar {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+            box-sizing: border-box;
+        }
+
+        .navbar-left,
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .navbar-brand {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #4CAF50;
+            /* Primary Green */
+            text-decoration: none;
+        }
+
+        .navbar-btn {
+            background-color: #4CAF50;
+            /* Primary Green */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .navbar-btn:hover {
+            background-color: #388E3C;
+            /* Darker Green */
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar-btn.logout-btn {
+            background-color: #f44336;
+            /* Red for logout button */
+        }
+
+        .navbar-btn.logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Navbar Profile Picture */
+        .navbar-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #4CAF50;
+            /* Primary Green border */
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .navbar-profile-pic:hover {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
+
 <body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="ArtisanDashboard.php" class="navbar-brand">JuaKazi</a>
+            <!-- Add other left-aligned links if any -->
+        </div>
+        <div class="navbar-right">
+            <!-- Profile Picture Link (now with fetched $artisan data) -->
+            <a href="viewArtisanProfile.php">
+                <?php if (!empty($artisan['profile_image_url'])): ?>
+                    <img src="<?php echo htmlspecialchars($artisan['profile_image_url']); ?>" alt="Profile Picture" class="navbar-profile-pic">
+                <?php else: ?>
+                    <img src="images/default_profile.jpg" alt="Default Profile" class="navbar-profile-pic">
+                <?php endif; ?>
+            </a>
+            <a href="logout.php" class="navbar-btn logout-btn">Logout</a>
+        </div>
+    </nav>
     <div class="profile-container">
         <?php if ($artisan_profile): ?>
             <h1><?php echo htmlspecialchars($artisan_profile['first_name'] . ' ' . $artisan_profile['last_name']); ?>'s Profile</h1>
@@ -189,7 +281,7 @@ if ($artisan_to_view_id) {
                     echo '<i class="fab fa-whatsapp"></i> Contact Artisan';
                     echo '</a>';
                 }
-                
+
                 ?>
 
             </div>
@@ -200,11 +292,12 @@ if ($artisan_to_view_id) {
             <?php
             // Provide a "Create Profile" link ONLY if it's the artisan viewing their own missing profile
             if (isset($_SESSION['user_id']) && $_SESSION['userType'] === 'artisan' && $is_viewing_own_profile) {
-                 echo '<p style="text-align: center;">If you are an artisan, you can create your profile now:</p>';
-                 echo '<div style="text-align: center;"><a href="ArtisanProfile.php" class="edit-profile-btn">Create Profile Now</a></div>';
+                echo '<p style="text-align: center;">If you are an artisan, you can create your profile now:</p>';
+                echo '<div style="text-align: center;"><a href="ArtisanProfile.php" class="edit-profile-btn">Create Profile Now</a></div>';
             }
             ?>
         <?php endif; ?>
     </div>
 </body>
+
 </html>

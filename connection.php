@@ -1,8 +1,10 @@
 <?php
+//should i permanently change the database name to jua_kazi?
+// kukiwa na shida please chande this
 $servername = "localhost";
 $username = "root";
 $password = "";
-$db_name = "juakazi";
+$db_name = "jua_kazi";
 $port = "3307";
 
 
