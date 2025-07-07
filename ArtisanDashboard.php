@@ -2,7 +2,7 @@
 session_start();
 require_once 'connection.php'; // Adjust if your file is named differently
 
-// ✅ Check if the user is logged in
+// Check if the user is logged in
 if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'artisan') {
     header("Location: login.php");
     exit();
@@ -10,7 +10,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['userType'] !== 'artisan') {
 
 $user_id = $_SESSION['user_id'];
 
-// ✅ Fetch artisan profile
+// Fetch artisan profile
 $profile_sql = "
     SELECT a.*, 
            GROUP_CONCAT(DISTINCT ae.expertise_name SEPARATOR ', ') AS expertise_list
@@ -25,14 +25,14 @@ $profile_stmt->execute();
 $profile_result = $profile_stmt->get_result();
 $artisan = $profile_result->fetch_assoc();
 
-// ❗ If artisan not found, force logout
+// If artisan not found, force logout
 if (!$artisan) {
     header("Location: logout.php");
     echo "<script>alert('Your artisan profile is not found. Please contact support.');</script>";
     exit();
 }
 
-// ✅ Fetch job matches
+//  Fetch job matches
 $artisan_id = $artisan['artisan_id'];
 $county = $artisan['county'];
 
@@ -188,7 +188,7 @@ $jobs_result = $jobs_stmt->get_result();
 </header>
 
 <div class="container">
-    <!-- ✅ Artisan Profile Info -->
+    <!--  Artisan Profile Info -->
     <div class="profile">
         <?php if (!empty($artisan['profile_image_url'])): ?>
             <img src="<?php echo htmlspecialchars($artisan['profile_image_url']); ?>" alt="Profile Picture">
@@ -214,7 +214,7 @@ $jobs_result = $jobs_stmt->get_result();
         </div>
     </div>
 
-    <!-- ✅ Matching Jobs -->
+    <!--  Matching Jobs -->
     <div class="jobs-section">
         <h3>Matching Jobs</h3>
         <?php if ($jobs_result->num_rows > 0): ?>
